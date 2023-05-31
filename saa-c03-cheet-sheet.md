@@ -8,6 +8,34 @@
 
 - S3 Lifecycle Policy
 
+- S3 Object Lock enabled
+
+- s3:PutObjectLegalHold
+
+  The Object Lock legal hold operation enables you to place a legal hold on an object version. Like setting a retention period, **a legal hold prevents an object version from being overwritten or deleted.** However, a legal hold doesn't have an associated retention period and remains in effect until removed.
+
+- preassigned URL
+
+  preassigned URL is for upload or download for temporary time and for specific users outside the company. signed URL is for temporary access
+
+## Amazon API Gateway
+
+
+
+## NAT Gateway
+
+NAT Gateway will be created Public Subnet and Provide access to Private Subnet
+
+## Amazon ECS
+
+- AWS Fargate
+
+  AWS Fargate is a technology that you can use with Amazon ECS to run containers without having to manage servers or clusters of Amazon EC2 instances. With Fargate, you no longer have to provision, configure, or scale clusters of virtual machines to run containers. This removes the need to choose server types, decide when to scale your clusters, or optimize cluster packing. 
+
+## Amazon DataSync
+
+To automate the process of transferring the data from the on-premises SFTP server to an EC2 instance with an EFS file system, you can use AWS DataSync. AWS DataSync is a fully managed data transfer service that simplifies, automates, and accelerates transferring data between on-premises storage systems and Amazon S3, Amazon EFS, or Amazon FSx for Windows File Server. To use AWS DataSync for this task, you should **first install an AWS DataSync agent in the on-premises data center**. This agent is a lightweight software application that you install on your on-premises data source. T**he agent communicates with the AWS DataSync service to transfer data between the data source and target locations.**
+
 ## Gateway Load balancer
 
 Gateway Load Balancers enable you to deploy, scale, and **manage virtual appliances**, such as firewalls, **intrusion detection** and prevention systems, and **deep packet inspection** systems. It combines a transparent network gateway (that is, a single entry and exit point for all traffic) and distributes traffic while scaling your virtual appliances with the demand.
@@ -16,7 +44,15 @@ A Gateway Load Balancer **operates at the third layer of the Open Systems Interc
 
 ## Amazon CloudFront distribution
 
+
+
 ## AWS Global Accelerator
+
+HTTP + TCP 
+
+## Amazon MQ
+
+
 
 ## Amazon SQS
 
@@ -33,7 +69,7 @@ Athena helps you analyze unstructured, semi-structured, and structured data stor
 
 ## Amazon Glue
 
-## Amazon Redshift
+- AWS Glue tracks data that has already been processed during a previous run of an ETL job by persisting state information from the job run. This persisted state information is called a job bookmark. **Job bookmarks help AWS Glue maintain state information and prevent the reprocessing of old data.**
 
 ## AWS Snowball Edge 
 
@@ -47,7 +83,7 @@ Aurora is a fully managed, MySQL-compatible relational database that is designed
 
 QuickSight **don't support IAM. We use users and groups** to view the QuickSight dashboard
 
-# Amazon Elastic Block Store (Amazon EBS)
+## Amazon Elastic Block Store (Amazon EBS)
 
 - Snapshot
 
@@ -56,6 +92,10 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 - Fast Snapshot Restore(FSR)
 
   Amazon EBS fast snapshot restore (FSR) enables you to create a volume from a snapshot that is fully initialized at creation. This eliminates the latency of I/O operations on a block when it is accessed for the first time. Volumes that are created using fast snapshot restore instantly deliver all of their provisioned performance.
+
+## Amazon RDS
+
+ Amazon RDS event notification doesn't support any notification when data inside DB is updated. You can use a SQS to do notification.
 
 ## EFS
 
@@ -89,18 +129,24 @@ AWS Network Firewall is a managed firewall service that provides filtering for *
 
   Always remember that **you should associate IAM roles to EC2 instances**
 
-- AWS Secrets Manager
+## AWS Secrets Manager
 
-  AWS Secrets Manager is a secrets management service that helps you protect access to your applications, services, and IT resources. This service enables you to rotate, manage, and retrieve database credentials, API keys, and other secrets throughout their lifecycle.
+AWS Secrets Manager is a secrets management service that helps you protect access to your applications, services, and IT resources. This service enables you to rotate, manage, and retrieve database credentials, API keys, and other secrets throughout their lifecycle.
 
-  - You can rotate secrets on a schedule or on demand by using the Secrets Manager console, AWS SDK, or AWS CLI.
-  - With Secrets Manager, you can store, retrieve, manage, and rotate your secrets, including database credentials, API keys, and other secrets. When you create a secret using Secrets Manager, it’s created and managed in a Region of your choosing. Although scoping secrets to a Region is a security best practice, there are scenarios such as disaster recovery and **cross-Regional redundancy that require replication of secrets across Regions**. Secrets Manager now makes it possible for you to easily replicate your secrets to one or more Regions to support these scenarios
+- You can rotate secrets on a schedule or on demand by using the Secrets Manager console, AWS SDK, or AWS CLI.
+- With Secrets Manager, you can store, retrieve, manage, and rotate your secrets, including database credentials, API keys, and other secrets. When you create a secret using Secrets Manager, it’s created and managed in a Region of your choosing. Although scoping secrets to a Region is a security best practice, there are scenarios such as disaster recovery and **cross-Regional redundancy that require replication of secrets across Regions**. Secrets Manager now makes it possible for you to easily replicate your secrets to one or more Regions to support these scenarios
 
-- AWS Systems Manager Parameter Store
+## AWS Systems Manager Parameter Store
 
-  no auto rotation for keys
+no auto rotation for keys
 
-- AWS Key Management Service (AWS KMS)
+## AWS Key Management Service (AWS KMS)
+
+- Server-side encryption with AWS KMS keys (SSE-KMS)
+
+  SSE-KMS allows you to use keys that are managed by the AWS Key Management Service (KMS) to encrypt your data at rest. KMS is a fully managed service that makes it easy to create and control the encryption keys used to encrypt your data. With automatic key rotation enabled, KMS will automatically create a new key for you on a regular basis, typically every year, and use it to encrypt your data. This simplifies the key rotation process and reduces the operational burden on your team.
+
+  
 
 - aws:PrincipalOrgID
 
@@ -115,6 +161,10 @@ AWS Config provides a detailed view of the resources associated with your AWS ac
 ## AWS Cost Explorer
 
 AWS Cost Explorer is a tool that enables you to view and analyze your costs and usage. You can explore your usage and costs using the main graph, the Cost Explorer cost and usage reports, or the Cost Explorer RI reports. You can view data for up to the last 12 months, forecast how much you're likely to spend for the next 12 months, and get recommendations for what Reserved Instances to purchase. You can use Cost Explorer to identify areas that need further inquiry and see trends that you can use to understand your costs.
+
+## AWS Shield Advanced
+
+AWS Shield can **handle the DDoS attacks. But it can not be attached directly to EC2 instances.** t requires to be attached to services such as CloudFront, Route 53, Global Accelerator, ELB or (in the most direct way using) Elastic IP (attached to the EC2 instance)
 
 
 
