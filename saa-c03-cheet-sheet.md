@@ -36,6 +36,8 @@
 
   Configuring provisioned concurrency would get rid of the "cold start" of the function therefore speeding up the proccess.
 
+- Create an IAM execution role with the required permissions and attach the IAM role to the Lambda function.
+
  
 
 ## Amazon Certificate Manager(ACM)
@@ -58,6 +60,10 @@
 ## Amazon S3
 
 S3 is the cheapest and most scalable.
+
+- Configuring fast, secure file transfers using **Amazon S3 Transfer Acceleration**
+
+- With **S3 Block Public Access,** account administrators and bucket owners can easily set up centralized controls to limit public access to their Amazon S3 resources that are enforced regardless of how the resources are created.
 
 - S3 Standard-Infrequent Access(Standard-IA)
 
@@ -204,7 +210,11 @@ AWS Transfer Family is a fully managed AWS service that you can use to **transfe
 
 ## Amazon DataSync
 
-**NFS, SMB, HDFS, S3, EFS, Fsz, Snowcone**
+**NFS, SMB, HDFS, S3, EFS, FSx, Snowcone**
+
+Better for one-time migration ?
+
+securely
 
 To automate the process of transferring the data from the on-premises SFTP server to an EC2 instance with an EFS file system, you can use AWS DataSync. AWS DataSync is a fully managed data transfer service that simplifies, automates, and accelerates transferring data between on-premises storage systems and **Amazon S3, Amazon EFS, or Amazon FSx for Windows File Server.** To use AWS DataSync for this task, you should **first install an AWS DataSync agent in the on-premises data center**. This agent is a lightweight software application that you install on your on-premises data source. T**he agent communicates with the AWS DataSync service to transfer data between the data source and target locations.**
 
@@ -315,9 +325,9 @@ With Amazon Kinesis Data Analytics for SQL Applications, you can process and ana
 
 
 
-## Amazon Kinesis
+## Amazon Kinesis Data Streams
 
-Kinesis stream **save data for up to 24 hours**, doesn't meet the 2 day requirement. Kinesis streams **don't have fail-safe** for failed processing, unlike SQS.
+A Kinesis data stream stores records from **24 hours by default, up to 8760 hours (365 days).** Kinesis streams **don't have fail-safe** for failed processing, unlike SQS.
 
 ## Amazon Athena
 
@@ -380,11 +390,30 @@ RDS, Aurora, Redshit, Athena, S3, OpenSearchm Timestream. Salesforce, Jira, on-p
 
 [AWS Lake Formation](https://aws.amazon.com/lake-formation/) is a fully managed service that helps you build, secure, and manage data lakes, and provide access control for data in the data lake. Customers across lines of business (LOBs) need a way to **manage granular access permissions for different users at the table and column level**. Lake Formation helps you manage fine-grained access for internal and external customers from a centralized location and in a scalable way.
 
-build **find-grained Access Control** for your application
+build **find-grained Access Control** for your application 
+
+There are two options to share your databases and tables with another account by using **Lake Formation cross-account access control:**
+
+- Lake Formation tag-based access control (recommended)
+- Lake Formation named resources
 
 Enforcing column-level security in Lake Formation
 
-## AWS Snowball
+## AWS Snowball Family
+
+- Snowball Edge Storage Optimized devices
+
+  - **Snowball Edge storage-optimized (for data transfer)** – This Snowball Edge device option has a 100 TB (80 TB usable) storage capacity.
+
+  - **Snowball Edge storage-optimized 210 TB** – This Snowball Edge device option has 210 TB of usable storage space.
+
+  - **Snowball Edge storage-optimized (with EC2 compute functionality)** – This Snowball Edge device option has up to 80 TB of usable storage space, 40 vCPUs, and 80 GB of memory for compute functionality. It also comes with 1 TB of additional SSD storage space for block volumes attached to Amazon EC2 AMIs.
+
+  - **Snowball Edge compute-optimized** – This Snowball Edge device (with AMD EPYC Gen2) has the most compute functionality, with up to 104 vCPUs, 416 GB of memory, and 28 TB of dedicated NVMe SSD for compute instances.
+
+    Snowball Edge compute-optimized (with AMD EPYC Gen1) has up to 52 vCPUs, 208 GB of memory, 42 TB (39.5 TB usable) storage space, and 7.68 TB of dedicated NVMe SSD for compute instances.
+
+  - **Snowball Edge compute-optimized with GPU** – This Snowball Edge device option is identical to the compute-optimized (with AMD EPYC Gen1) option and includes an installed graphics processing unit (GPU). The GPU is equivalent to the one available in the P3 Amazon EC2 instance type.
 
 ​	On a Snowball Edge device you can copy files with a speed of up to 100Gbps. 70TB will take around 5600 seconds, so very quickly, less than 2 hours. The downside is that it'll take between 4-6 working days to receive the device and then another 2-3 working days to send it back and for AWS to move the data onto S3 once it reaches them. Total time: 6-9 working days. Bandwidth used: 0.
 
@@ -400,6 +429,8 @@ The most cost-effective solution for **addressing high ReadIOPS and CPU utilizat
 
   mazon Aurora global databases **span multiple AWS Regions**, enabling low latency global reads and providing **fast recovery from the rare outage** that might affect an entire AWS Region. An Aurora global database has a primary DB cluster in one Region, and up to five secondary DB clusters in different Regions.
 
+- **Migrating data from an external MySQL database to an Amazon Aurora MySQL DB cluster  by using an Amazon S3 bucket**
+
 ## Amazon QuickSight
 
 QuickSight **don't support IAM. We use users and groups** to view the QuickSight dashboard
@@ -413,6 +444,9 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 - Fast Snapshot Restore(FSR)
 
   Amazon EBS fast snapshot restore (FSR) enables you to create a volume from a snapshot that is fully initialized at creation. This **eliminates the latency of I/O operations on a block when it is accessed for the first time**. Volumes that are created using fast snapshot restore instantly deliver all of their provisioned performance.
+
+- [Encryption by default](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#encryption-by-default) allows you to ensure that **all new EBS volumes created in your account are always encrypted,** even if you don’t specify encrypted=true request parameter.
+- Both GP2 and GP3 has max IOPS 16000 but GP3 is cost effective.
 
 ## Amazon RDS
 
@@ -536,6 +570,8 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
 
 **a subnet is per AZ**
 
+- CIDR blocks
+
 - VPC peering
 
   A VPC peering connection is a networking connection between two VPCs that enables you to route traffic between them privately. Resources in peered VPCs can communicate with each other as if they are within the same network. You can create a VPC peering connection between your own VPCs, with a VPC in another AWS account, or with a VPC in a different AWS Region. Traffic between peered VPCs never traverses the public internet.
@@ -567,6 +603,10 @@ Amazon Rekognition makes it easy to add image and video analysis to your applica
 ## Amazon Textract
 
 Amazon Textract enables you to add document text detection and analysis to your applications. You provide a document image to the Amazon Textract API, and the service detects the document text. Amazon Textract works with formatted text and can detect words and lines of words that are located close to each other. It can also analyze a document for items such as related text, tables, key-value pairs, and selection elements.
+
+## Amazon Simple Email Service(SES)
+
+Amazon SES is a cost-effective and scalable email service that enables businesses to send and receive email using their own email addresses and domains. Configuring the web instance to send email through Amazon SES is a simple and effective solution that can **reduce the time spent resolving complex email delivery issues and minimize operational overhead**
 
 ## Amazon DocumentDB
 
@@ -610,13 +650,19 @@ Lambda is an event-driven, serverless compute service that automatically scales 
 
   Always remember that **you should associate IAM roles to EC2 instances**
 
-- SCP (Service Control Policy)
+- **SCP (Service Control Policy)**
 
   Service control policies (SCPs) are one type of policy that you can use to manage your organization. SCPs offer central control over the maximum available permissions for all accounts in your organization, allowing you to ensure your accounts stay within your organization's access control guidelines. 
 
 ## Elastic Beanstalk
 
 Elastic Beanstalk is a fully managed service that makes it easy to deploy and run applications in the AWS; To enable frequent testing of new site features, you can use URL swapping to switch between multiple Elastic Beanstalk environments.
+
+rolling development
+
+## AWS SageMaker
+
+Amazon SageMaker is a fully managed **machine learning service**. With SageMaker, data scientists and developers can quickly and easily build and train machine learning models, and then directly deploy them into a production-ready hosted environment. It provides an integrated Jupyter authoring notebook instance for easy access to your data sources for exploration and analysis, so you don't have to manage servers. It also provides common machine learning algorithms that are optimized to run efficiently against extremely large data in a distributed environment. With native support for bring-your-own-algorithms and frameworks, SageMaker offers flexible distributed training options that adjust to your specific workflows. Deploy a model into a secure and scalable environment by launching it with a few clicks from SageMaker Studio or the SageMaker console.
 
 ## AWS Certificate Manager(ACM)
 
