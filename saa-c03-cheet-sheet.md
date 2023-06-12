@@ -1,3 +1,13 @@
+## IAM
+
+- Providing access to AWS accounts owned by third parties
+
+  **When third parties require access to your organization's AWS resources, you can use roles to delegate access to them.** For example, a third party might provide a service for managing your AWS resources. With IAM roles, you can grant these third parties access to your AWS resources without sharing your AWS security credentials. Instead, the third party can access your AWS resources by assuming a role that you create in your AWS account.
+
+- Set an **overall policy** for the entrie AWS account 
+
+  A solutions architect wants all new users to have specific complexity requirements and mandatory rotation periods for IAM user passwords.
+
 ## AWS Lambda Function
 
 - CloudWatch Events EventBridge -> trigger every certain time -> AWS lambda function perofrom a task
@@ -12,6 +22,8 @@
 
   disk capacity 512MB - 10 GB
 
+  vCPU cores: 6
+
 - Lambda in VPC
 
   Lamdda will create an ENI(Elastic Network Interface) in your subnets
@@ -19,6 +31,10 @@
   Lambda with RDS Proxy
 
   **The Lambda function must be deployed in your VPC, because RDS Proxy is never pubilcly accessible.**
+
+- Provisioned concurrency 
+
+  Configuring provisioned concurrency would get rid of the "cold start" of the function therefore speeding up the proccess.
 
  
 
@@ -28,19 +44,44 @@
 
 ## Amazon CloudWatch
 
+- **EC2 do not provide by default memory metrics to CloudWatch and require the CloudWatch Agent to be installed on the monitored instances**
+- You can use metric streams to continually stream CloudWatch metrics to a destination of your choice, with **near-real-time** delivery and low latency. One of the use cases is Data Lake: create a metric stream and direct it to an Amazon Kinesis Data Firehose delivery stream that delivers your CloudWatch metrics to a data lake such as Amazon S3. 
+
 - composite alarm
 
   The composite alarm goes into ALARM state **only if all conditions of the rule are met.**
+
+## Amazon CloudTrail
+
+ CloudTrail provides event history of your AWS account activity, including actions taken through the AWS Management Console, AWS Command Line Interface (CLI), and AWS SDKs and APIs. By enabling CloudTrail, the company **can track user activity and changes to AWS resources, and monitor compliance with internal policies and external regulations.**
 
 ## Amazon S3
 
 S3 is the cheapest and most scalable.
 
+- S3 Standard-Infrequent Access(Standard-IA)
+
+  S3 Standard-IA is designed for infrequently accessed data, and it provides a lower storage cost than S3 Standard, while still offering the same low latency, high throughput, and high durability as S3 Standard.
+
+- S3 One Zone-Infrequent Access (S3 One Zone-IA)
+
+  cheaper, only in one zone, isn't high availabililty
+
+- Discovering and Deleting Incomplete Multipart Uploads to Lower Amazon S3 Costs
+
+- To encrypt an object at the time of upload, you need to add **a header called x-amz-server-side-encryption** to the request to tell S3 to encrypt the object using SSE-C, SSE-S3, or SSE-KMS.
+
+- **S3 Storage Lens** is a fully managed S3 storage analytics solution that provides a comprehensive view of object storage usage, activity trends, and recommendations to optimize costs. Storage Lens allows you to **analyze object access patterns** across all of your S3 buckets and generate detailed metrics and reports.
+
+- S3 Object Lambda
+
+- Expiration / NoncurrentVersionExpiration 
+
 - S3 Replication (cross region)
 
   - Unencrypted objects and objects encrypted with SSE-S3 are replicated by default
 
-  - bjects encrypted with SSE-C(customer provided key) are never replicated
+  - Objects encrypted with SSE-C(customer provided key) are never replicated
   - For objects encrypted with SSE-KMS, you need to enable the option(IAM Roles .....)
 
 - **S3 can NOT send event notification to SageMaker.**
@@ -75,19 +116,59 @@ S3 is the cheapest and most scalable.
 
     **In Governance mode, Objects can be deleted by some users with special permissions.**
 
+- Create Dynamic Contact Forms for S3 Static Websites Using AWS Lambda, Amazon API Gateway, and Amazon SES 
+
+## AWS Storage Gateway
+
+AWS Storage Gateway connects an on-premises software appliance with cloud-based storage to provide seamless integration with data security features between your on-premises IT environment and the AWS storage infrastructure. You can use the service to store data in the Amazon Web Services Cloud for scalable and cost-effective storage that helps maintain data security.
+
+AWS Storage Gateway offers file-based File Gateways (Amazon S3 File and Amazon FSx File), volume-based (Cached and Stored), and tape-based storage solutions.
+
+cached / stored
+
 ## Amazon API Gateway
 
 AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, different environments, security
+
+- usage plan and API keys [subscription, control access]
+
+  A *usage plan* specifies who can access one or more deployed API stages and methods—and optionally sets the target request rate to start throttling requests. The plan uses API keys to identify API clients and who can access the associated API stages for each key.
+
+  *API keys* are alphanumeric string values that you distribute to application developer customers to grant access to your API. You can use API keys together with [Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html), [IAM roles](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html), or [Amazon Cognito](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html) to control access to your APIs. API Gateway can generate API keys on your behalf, or you can import them from a [CSV file](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-key-file-format.html). You can generate an API key in API Gateway, or import it into API Gateway from an external source. For more information, see [Set up API keys using the API Gateway console](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-setup-api-key-with-console.html).
 
 ## NAT Gateway
 
 NAT Gateway will be created Public Subnet and Provide access to Private Subnet
 
+Each NAT gateway is created **in a specific Availability Zone** and implemented with redundancy in that zone.
+
+## Transit Gateway
+
+A *transit gateway* is a network transit hub that you can use to interconnect your **virtual private clouds (VPCs) and on-premises networks**. As your cloud infrastructure expands globally, inter-Region peering connects transit gateways together using the AWS Global Infrastructure. Your data is automatically encrypted and never travels over the public internet.
+
 ## Amazon EC2
 
 - Auto scaling groups can not span multi region
 
+- Amazon EC2 Auto Scaling lifecycle hooks
+
+  Amazon EC2 Auto Scaling offers the ability to add lifecycle hooks to your Auto Scaling groups. These hooks let you create solutions that a**re aware of events in the Auto Scaling instance lifecycle, and then perform a custom action on instances when the corresponding lifecycle event occurs**. A lifecycle hook provides a specified amount of time (one hour by default) to wait for the action to complete before the instance transitions to the next state.
+
+  **run scripts**
+
+- Predictive scaling for Amazon EC2 Auto Scaling
+
+  Use predictive scaling to increase the number of EC2 instances in your Auto Scaling group in advance of daily and weekly patterns in traffic flows.
+
 - **A target tracking policy** allows the Auto Scaling group to automatically adjust the number of EC2 instances in the group **based on a target value for a metric**.
+
+- TCP, UDP, and ICMP.
+
+- Amazon EC2 Dedicated Hosts 
+
+  **allow you to use your eligible software licenses from vendors** such as Microsoft and Oracle on Amazon EC2, so that you get the flexibility and cost effectiveness of using your own licenses, but with the resiliency, simplicity and elasticity of AWS. An Amazon EC2 Dedicated Host is a physical server fully dedicated for your use, so you can help address corporate compliance requirements.
+
+  Amazon EC2 Dedicated Host is also integrated with AWS License Manager, a service which helps you manage your software licenses, including Microsoft Windows Server and Microsoft SQL Server licenses. In License Manager, you can specify your licensing terms for governing license usage, as well as your Dedicated Host management preferences for host allocation and host capacity utilization. Once setup, AWS takes care of these administrative tasks on your behalf, so that you can seamlessly launch virtual machines (instances) on Dedicated Hosts just like you would launch an EC2 instance with AWS provided licenses.
 
 ## Amazon ECS
 
@@ -99,7 +180,9 @@ NAT Gateway will be created Public Subnet and Provide access to Private Subnet
 
 ## AWS Backup
 
-Using AWS Backup is a simple and efficient way to **backup EC2 instances and RDS databases to a separate region**. It requires **minimal operational overhead** and can be easily managed through the AWS Backup console or API. AWS Backup can also provide automated scheduling and retention management for backups, which can help ensure that backups are always available and up to date.
+EC2, RDS, S3
+
+Using AWS Backup is a simple and efficient way to **backup EC2 instances and RDS databases to a separate region**. It requires **minimal operational overhead** and can be easily managed through the AWS Backup console or API. AWS Backup can also provide **automated scheduling and retention management** for backups, which can help ensure that backups are always available and up to date.
 
 AWS Backup allows you to backup your S3 data stored in the following S3 Storage Classes: 
 
@@ -121,19 +204,38 @@ AWS Transfer Family is a fully managed AWS service that you can use to **transfe
 
 ## Amazon DataSync
 
-To automate the process of transferring the data from the on-premises SFTP server to an EC2 instance with an EFS file system, you can use AWS DataSync. AWS DataSync is a fully managed data transfer service that simplifies, automates, and accelerates transferring data between on-premises storage systems and Amazon S3, Amazon EFS, or Amazon FSx for Windows File Server. To use AWS DataSync for this task, you should **first install an AWS DataSync agent in the on-premises data center**. This agent is a lightweight software application that you install on your on-premises data source. T**he agent communicates with the AWS DataSync service to transfer data between the data source and target locations.**
+**NFS, SMB, HDFS, S3, EFS, Fsz, Snowcone**
+
+To automate the process of transferring the data from the on-premises SFTP server to an EC2 instance with an EFS file system, you can use AWS DataSync. AWS DataSync is a fully managed data transfer service that simplifies, automates, and accelerates transferring data between on-premises storage systems and **Amazon S3, Amazon EFS, or Amazon FSx for Windows File Server.** To use AWS DataSync for this task, you should **first install an AWS DataSync agent in the on-premises data center**. This agent is a lightweight software application that you install on your on-premises data source. T**he agent communicates with the AWS DataSync service to transfer data between the data source and target locations.**
 
 ## Application Load Balancer
+
+Layer 7 (HTTP)
 
 can do
 
 - http - > https redirect rule with ACM
+- health check
+
+## Network Load Balancer
+
+layer 4 ( TCP / UDP / TLS)
 
 ## Gateway Load balancer
 
 Gateway Load Balancers enable you to deploy, scale, and **manage virtual appliances**, such as firewalls, **intrusion detection** and prevention systems, and **deep packet inspection** systems. It combines a transparent network gateway (that is, a single entry and exit point for all traffic) and distributes traffic while scaling your virtual appliances with the demand.
 
 A Gateway Load Balancer **operates at the third layer of the Open Systems Interconnection (OSI) model,** the network layer. It listens for **all IP packets** across all ports and forwards traffic to the target group that's specified in the listener rule. It maintains stickiness of flows to a specific target appliance using 5-tuple (for TCP/UDP flows) or 3-tuple (for non-TCP/UDP flows). The Gateway Load Balancer and its registered virtual appliance instances exchange application traffic using the [GENEVE](https://datatracker.ietf.org/doc/html/rfc8926) protocol on port 6081
+
+## Savings Plans
+
+- Compute Savings Plans
+
+  Compute Savings Plans provide the most flexibility and help to reduce your costs by up to 66%. These plans automatically apply to EC2 instance usage **regardless of instance family**, size, AZ, Region, OS or tenancy, and **also apply to Fargate or Lambda usage**. For example, with Compute Savings Plans, you can change from C4 to M5 instances, shift a workload from EU (Ireland) to EU (London), or move a workload from EC2 to Fargate or Lambda at any time and automatically continue to pay the Savings Plans price.
+
+- EC2 Instance Savings Plans
+
+  EC2 Instance Savings Plans provide the lowest prices, offering savings up to 72% in exchange for commitment to usage of individual instance families in a Region (e.g. M5 usage in N. Virginia). This automatically reduces your cost on the selected instance family in that region regardless of AZ, size, OS or tenancy. EC2 Instance Savings Plans give you the flexibility to change your usage between instances **within a family in that region**. For example, you can move from c5.xlarge running Windows to c5.2xlarge running Linux and automatically benefit from the Savings Plan prices.
 
 ## Spot Fleet
 
@@ -145,6 +247,17 @@ spot fleet = spot Instances + on-demand
 
 - CloudFront offers several options for streaming your media to global viewers—**both pre-recorded files and live events.**
 
+- Using AWS Lambda with **CloudFront Lambda@Edge**
+
+  Lambda@Edge lets you run Node.js and Python Lambda functions to customize content that CloudFront delivers, executing the functions in AWS locations closer to the viewer. The functions run in response to CloudFront events, without provisioning or managing servers.
+
+  - Inspect cookies to rewrite URLs to different versions of a site for A/B testing.
+  - **Send different objects to your users based on the `User-Agent` header,** which contains information about the device that submitted the request. For example, you can send images in different resolutions to users based on their devices.
+  - **Inspect headers or authorized tokens**, inserting a corresponding header and allowing access control before forwarding a request to the origin.
+  - Add, delete, and modify headers, and rewrite the URL path to direct users to different objects in the cache.
+  - Generate new HTTP responses to do things like redirect unauthenticated users to login pages, or create and deliver static webpages right from the edge.
+  - Resizing Images
+
 - Field-level Encrpytion
 
   Field-level encryption allows you to enable your users to securely upload sensitive information to your web servers. The sensitive information provided by your users is encrypted at the edge, close to the user, and remains encrypted throughout your entire application stack
@@ -153,15 +266,24 @@ spot fleet = spot Instances + on-demand
 
   I want to restrict access to my Amazon Simple Storage Service (Amazon S3) bucket so that objects can be a**ccessed only through my Amazon CloudFront distribution**. How can I do that? Create a CloudFront origin access identity (OAI)
 
+- If you want CloudFront to cache different versions of your objects based on the **language specified** in the request, configure CloudFront to forward the `Accept-Language` header to your origin.
+
 ## AWS Global Accelerator
 
 TCP / UDP
+
+## AWS Batch
+
+AWS Batch is a fully-managed service that can launch and manage the compute resources needed to execute batch jobs. It can scale the compute environment based on the size and timing of the batch jobs.
 
 ## Amazon MQ
 
 
 
 ## Amazon SQS
+
+- For **Maximum message size**, enter a value. The range is **1 KB to 256 KB**. The default value is 256 KB.
+- To manage large Amazon Simple Queue Service (Amazon SQS) messages, you can use Amazon Simple Storage Service (Amazon S3) and the **Amazon SQS Extended Client Library for Java.** This is especially useful for storing and consuming messages **up to 2 GB.** Unless your application requires repeatedly creating queues and leaving them inactive or storing large amounts of data in your queues, consider using Amazon S3 for storing your data.
 
 - Standard queue
 
@@ -179,9 +301,17 @@ Amazon SNS defines a *delivery policy* for each delivery protocol. The delivery 
 
 **A dead-letter queue associated with an Amazon SNS subscription is an ordinary Amazon SQS queue.**
 
-### Amazon Kinesis Data Firehose
+## Amazon Kinesis Data Firehose
 
 a fully managed service for **streaming data to Amazon OpenSearch Service** (Amazon Elasticsearch Service) and other destinations. You can configure the log group as the source of the delivery stream and Amazon OpenSearch Service as the destination. This solution requires minimal operational overhead, as Kinesis Data Firehose automatically scales and handles data delivery, transformation, and indexing.
+
+Amazon Kinesis Data Firehose, which is a fully managed service that can automatically handle the data collection, data transformation, encryption, and data storage in **near-real time**. Kinesis Data Firehose can automatically store the data in Amazon S3 in Apache Parquet format for further processing. 
+
+## Amazon Kinesis Analytics
+
+**near-real-time data querying** = Kinesis analytics
+
+With Amazon Kinesis Data Analytics for SQL Applications, you can process and analyze streaming data using standard SQL. The service enables you to quickly author and run powerful SQL code against streaming sources to perform time series analytics, feed real-time dashboards, and create real-time metrics.
 
 
 
@@ -191,15 +321,70 @@ Kinesis stream **save data for up to 24 hours**, doesn't meet the 2 day requirem
 
 ## Amazon Athena
 
+**S3**, **Logs**
+
 Athena helps you analyze unstructured, semi-structured, and structured data **stored in Amazon S3**. Examples include **CSV, JSON, or columnar data formats such as Apache Parquet and Apache ORC**. You can use Athena to run **ad-hoc queries** using ANSI SQL, without the need to aggregate or load the data into Athena.
+
+- Amazon Athena + Lambda (Data Source Connector) Frderated Query -> S3
 
 ## Amazon RedShift
 
+Amazon Redshift is a fully managed, **petabyte-scale data warehouse** service in the cloud. Amazon Redshift Serverless lets you access and analyze data without all of the configurations of a provisioned data warehouse.
+
+OLAP - online analytical processing (analytics and data warehousing)
+
+**PBs of data**
+
+faster queries / joins / aggregations thanks to indexes
+
+**Redshift cluster**: Leader node + computer node (provison the node size in advance)
+
+- Use case :
+  - Amazon Kinesis Data Firehose + Amazon Redshift Cluster (through S3 copy)
+  - S3 + Amazon Redshift Cluster(s3 copy, through VPC or Internet)
+  - EC2 + Amazon Redshift Cluster(though JDBC driver, better to write data in batches)
+
+**Redshit Spectrum**: do analyze without having previous data in your cluster, can do analyzze directly on-premis  S3 bucket but you need a cluster at first to start your query
+
+## Amazon OpenSearch (ElasticSearch)
+
+Ingestion form Kinesis Data Firehose, IoT, CloudWatch Logs ...
+
+doesn't support sql query
+
+## Amazon EMR (Elastic MapReduce)
+
+helps creating Hadoop clusters(Big Data) , can be made of hundreds of EC2 instances
+
+Master Node(long running) + Core Node(long running) + Task Node(usually spot)
+
+## Amazon QuickSight
+
+RDS, Aurora, Redshit, Athena, S3, OpenSearchm Timestream. Salesforce, Jira, on-premises Databasesm Data Source(xlsx, csv ...)
+
+**Users and Groups**
+
 ## Amazon Glue
 
-- AWS Glue tracks data that has already been processed during a previous run of an ETL job by persisting state information from the job run. This persisted state information is called a job bookmark. **Job bookmarks help AWS Glue maintain state information and prevent the reprocessing of old data.**
+- AWS Glue allows fully managed **CSV to Parquet** conversion jobs
 
-## AWS Snowball Edge 
+  s3 + Glue ETL + S3 + Athena
+
+- **Job bookmarks help AWS Glue maintain state information and prevent the reprocessing of old data.**
+
+- Use case:
+
+  s3 / RDS + Glue ETL + Redshift Data Warehouse
+
+## AWS Lake Formation
+
+[AWS Lake Formation](https://aws.amazon.com/lake-formation/) is a fully managed service that helps you build, secure, and manage data lakes, and provide access control for data in the data lake. Customers across lines of business (LOBs) need a way to **manage granular access permissions for different users at the table and column level**. Lake Formation helps you manage fine-grained access for internal and external customers from a centralized location and in a scalable way.
+
+build **find-grained Access Control** for your application
+
+Enforcing column-level security in Lake Formation
+
+## AWS Snowball
 
 ​	On a Snowball Edge device you can copy files with a speed of up to 100Gbps. 70TB will take around 5600 seconds, so very quickly, less than 2 hours. The downside is that it'll take between 4-6 working days to receive the device and then another 2-3 working days to send it back and for AWS to move the data onto S3 once it reaches them. Total time: 6-9 working days. Bandwidth used: 0.
 
@@ -208,6 +393,12 @@ Athena helps you analyze unstructured, semi-structured, and structured data **st
 Aurora is a fully managed, MySQL-compatible relational database that is designed for high performance and high availability. Aurora Multi-AZ deployments **automatically maintain a synchronous standby replica in a different Availability Zone to provide high availability**. Additionally, Aurora Auto Scaling allows you to automatically scale the number of Aurora Replicas in response to read workloads, allowing you to meet the demand of unpredictable read workloads while maintaining high availability. This would provide an automated solution for scaling the database to meet the demand of the application while maintaining high availability.
 
 The most cost-effective solution for **addressing high ReadIOPS and CPU utilization when running large reports would be to migrate the monthly reporting to an Aurora Replica**. An Aurora Replica is a read-only copy of an Aurora database that is updated in real-time with the primary database. By using an Aurora Replica for running large reports, the primary database will be relieved of the additional read load, improving performance for the ecommerce application
+
+- **Amazon Aurora Serverless**
+
+- Amazon Aurora global databases
+
+  mazon Aurora global databases **span multiple AWS Regions**, enabling low latency global reads and providing **fast recovery from the rare outage** that might affect an entire AWS Region. An Aurora global database has a primary DB cluster in one Region, and up to five secondary DB clusters in different Regions.
 
 ## Amazon QuickSight
 
@@ -221,9 +412,27 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
 - Fast Snapshot Restore(FSR)
 
-  Amazon EBS fast snapshot restore (FSR) enables you to create a volume from a snapshot that is fully initialized at creation. This eliminates the latency of I/O operations on a block when it is accessed for the first time. Volumes that are created using fast snapshot restore instantly deliver all of their provisioned performance.
+  Amazon EBS fast snapshot restore (FSR) enables you to create a volume from a snapshot that is fully initialized at creation. This **eliminates the latency of I/O operations on a block when it is accessed for the first time**. Volumes that are created using fast snapshot restore instantly deliver all of their provisioned performance.
 
 ## Amazon RDS
+
+- does not support io2 (only io1)
+
+- By default, all inbound traffic to an RDS instance is blocked. 
+
+- *Multi-AZ deployments are not a read scaling solution, you cannot use a standby replica to serve read traffic. The standby is only there for failover.*
+
+- Automated Backups
+
+  This backup occurs during a daily user-configurable 30 minute period known as the **backup window**. Automated backups are kept for a configurable number of days (called the backup retention period). Your automatic backup **retention period can be configured to up to thirty-five days.**
+
+- Creating a read replica
+
+  When you create a read replica, Amazon RDS takes a DB snapshot of your source DB instance and begins replication. As a result, you experience a brief I/O suspension on your source DB instance while the DB snapshot occurs.
+
+  An active, long-running transaction can slow the process of creating the read replica. We recommend that you wait for long-running transactions to complete before creating a read replica. If you create multiple read replicas in parallel from the same source DB instance, Amazon RDS takes only one snapshot at the start of the first create action.
+
+  When creating a read replica, there are a few things to consider. First, you must enable automatic backups on the source DB instance by setting the backup retention period to a value other than 0. This requirement also applies to a read replica that is the source DB instance for another read replica. To enable automatic backups on an RDS for MySQL read replica, first create the read replica, then modify the read replica to enable automatic backups.
 
 - Storage Auto Scaling
 
@@ -239,7 +448,9 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
   doesn't support any notification when data inside DB is updated/deleted/inserted. You can use a SQS to do notification.
 
-- RDS Multi-AZ = Synchronous = Disaster Recovery (DR) 
+- **RDS Multi-AZ = Synchronous = Disaster Recovery (DR)**
+
+   By using Multi-AZ deployment, the company can achieve an RPO of less than 1 second because the standby instance is always in sync with the primary instance, ensuring that data changes are continuously replicated.
 
 - **Read Replica = Asynchronous**
 
@@ -251,10 +462,21 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
 ## Amazon DynamoDB
 
+- hierachical data
+
+- DynamoDB supports some of the world's largest scale applications by providing consistent, **single-digit millisecond response times at any scale**. You can build applications with virtually unlimited throughput and storage.
+
 - highly available with replication across multiple AZs
+
 - NoSQL databse with transaction suppport.
+
 - standard / infrequent access tables 
+
 - In DynamoDB, you can rapidly evolve schemas
+
+- **DynamoDB Streams** 
+
+  **captures a time-ordered sequence of item-level modifications** in any DynamoDB table and stores this information in a log for up to 24 hours. Applications can access this log and view the data items as they appeared before and after they were modified, in near-real time.
 
 - Amazon DynamoDB has two **read/write capacity** modes for processing reads and writes on your tables:
 
@@ -278,7 +500,7 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
   Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, **seamless in-memory cache for DynamoDB** that helps improve the read performance of DynamoDB tables. DAX provides a caching layer between the application and DynamoDB, reducing the number of read requests made directly to DynamoDB. This can significantly reduce read latencies and improve overall application performance.
 
-- DynamoDB GLobal Tables
+- DynamoDB Global Tables
 
   enable DynamoDB Streams first
 
@@ -300,9 +522,23 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
 ## EFS
 
-​	Concurrent or at the same time key word for EFS
+- Linux 
+
+- Concurrent or at the same time key word for EFS
+
+- Portable Operating System Interface (POSIX) 
 
 ## VPC
+
+vpc != subnet
+
+A vpc spans all of the availability Zones in a Region,After you create a VPC, you can add one or more subnets in each Availability Zone.
+
+**a subnet is per AZ**
+
+- VPC peering
+
+  A VPC peering connection is a networking connection between two VPCs that enables you to route traffic between them privately. Resources in peered VPCs can communicate with each other as if they are within the same network. You can create a VPC peering connection between your own VPCs, with a VPC in another AWS account, or with a VPC in a different AWS Region. Traffic between peered VPCs never traverses the public internet.
 
 - Traffic Mirroring
 
@@ -318,7 +554,11 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
   VPC endpoint allows you to connect to AWS services using a private network instead of using the public Internet
 
-  A VPC endpoint enables private connectivity between the VPC and S3 without using an internet gateway or NAT device. 
+  A VPC endpoint enables **private connectivity between the VPC and S3 / DynamoDB without using an internet gateway or NAT device.** 
+
+- Interface Endpoint
+
+  an interface endpoint is a horizontally scaled, redundant VPC endpoint that provides private connectivity to a service. It is an elastic network interface with a private IP address that serves as an entry point for traffic destined to the AWS service. Interface endpoints are used to connect VPCs with AWS services
 
 ## Amazon Rekognition
 
@@ -332,15 +572,25 @@ Amazon Textract enables you to add document text detection and analysis to your 
 
 MongoDB
 
+## Amazon Elastic Transcoder
+
+Amazon Elastic Transcoder is media transcoding in [the cloud](https://aws.amazon.com/what-is-cloud-computing/). It is designed to be a highly scalable, easy to use and a cost effective way for developers and businesses to convert (or “transcode”) media files from their source format into versions that will playback on devices like smartphones, tablets and PCs.
+
 ## Amazon Transcribe
 
 speech -> text
 
 Amazon Transcribe is a service that **automatically transcribes spoken language into written text**. It can handle **multiple speakers** and can generate transcript files in real-time or asynchronously. These transcript files can be stored in Amazon S3 for long-term storage. 
 
+- PII redaction
+
+
+
 ## Amazon Cognito
 
 To control access to the REST API and reduce development efforts, the company can use an **Amazon Cognito user pool authorizer in API Gateway**. This will allow Amazon Cognito to validate each request and ensure that only authenticated users can access the API. This solution has the **LEAST operational overhead**, as it does not require the company to develop and maintain any additional infrastructure or code.
+
+Identity Pool -> IAM Role
 
 ## AWS Network Firewall
 
@@ -349,6 +599,10 @@ AWS Network Firewall is a managed firewall service that provides filtering for *
 ## Amazon Lambda
 
 Lambda is an event-driven, serverless compute service that automatically scales with the number of requests, making it more suitable for handling variable workloads and reducing response times during high traffic periods.
+
+## Security Group
+
+- You cannot use URLs in the outbound rules of a security group.
 
 ## Security / Access / Restriction
 
@@ -378,10 +632,10 @@ Integration with(Load TLS Certificates on)
 
 AWS Secrets Manager is a secrets management service that helps you protect access to your applications, services, and IT resources. This service enables you to rotate, manage, and retrieve database credentials, API keys, and other secrets throughout their lifecycle.
 
-- You can rotate secrets on a schedule or on demand by using the Secrets Manager console, AWS SDK, or AWS CLI.
+- You can **rotate secrets on a schedule** or on demand by using the Secrets Manager console, AWS SDK, or AWS CLI.
 - rotation of secrets every X days
 - **secrets are encrypted by KMS**
-- With Secrets Manager, you can store, retrieve, manage, and rotate your secrets, including database credentials, API keys, and other secrets. When you create a secret using Secrets Manager, it’s created and managed in a Region of your choosing. Although scoping secrets to a Region is a security best practice, there are scenarios such as disaster recovery and **cross-Regional redundancy that require replication of secrets across Regions**. Secrets Manager now makes it possible for you to easily replicate your secrets to one or more Regions to support these scenarios
+- With Secrets Manager, you can store, retrieve, manage, and rotate your secrets, including **database credentials**, API keys, and other secrets. When you create a secret using Secrets Manager, it’s created and managed in a Region of your choosing. Although scoping secrets to a Region is a security best practice, there are scenarios such as disaster recovery and **cross-Regional redundancy that require replication of secrets across Regions**. Secrets Manager now makes it possible for you to easily replicate your secrets to one or more Regions to support these scenarios
 
 ## AWS Systems Manager Parameter Store
 
@@ -393,9 +647,13 @@ notifications with EventBridge
 
 serverless, scalable
 
-no auto rotation for keys but TTL
+**no auto rotation** for keys but TTL
 
 Paremter is stored, and encrypted / decrypted by KMS
+
+## AWS Systems Manager Session Manager
+
+Session Manager is a fully managed AWS Systems Manager capability. With Session Manager, you can manage your Amazon Elastic Compute Cloud (Amazon EC2) instances, edge devices, on-premises servers, and virtual machines (VMs). You can use either an interactive one-click browser-based shell or the AWS Command Line Interface (AWS CLI). **Session Manager provides secure and auditable node management without the need to open inbound ports, maintain bastion hosts, or manage SSH keys**. Session Manager also allows you to comply with corporate policies that require controlled access to managed nodes, strict security practices, and fully auditable logs with node access details, while providing end users with simple one-click cross-platform access to your managed nodes.
 
 ## AWS Key Management Service (AWS KMS)
 
@@ -430,7 +688,7 @@ Paremter is stored, and encrypted / decrypted by KMS
 
 Configuration changes= AWS Config
 
-AWS Config provides a detailed view of the resources associated with your AWS account, including how they are configured, how they are related to one another, and how the configurations and their relationships have changed over time.
+AWS Config provides a detailed view of the resources associated with your AWS account, including how they are configured, how they are related to one another, and how the configurations and their relationships have **changed over time**.
 
 ## AWS Cost Explorer
 
@@ -454,9 +712,9 @@ By Defining **Web ACL(Web Access Control List)** Rules:
 
 **Geographic (Geo) Match Conditions in AWS WAF**. This new condition type allows you to use AWS WAF to restrict application access based on the geographic location of your viewers. With geo match conditions you can choose the countries from which AWS WAF should allow access.
 
-DDoS protection
+DDoS protection (a rate-based rule)
 
-SQL injection and Cross-Site Scripting (XSS)
+**SQL injection and Cross-Site Scripting (XSS)**
 
 Size constraints
 
@@ -474,7 +732,7 @@ AWS Firewall Manager security policies are **region specific**. Each Firewall Ma
 
 can collect information from **VPC Flow Logs, CloudTrail Logs, DNS Logs and EKS Audit Logs**
 
-- Intelligent Threat Discovery to protect your AWS Account
+- Intelligent Threat Discovery to **protect your AWS Account**
 - cant setup EventBridge rules to be notified in case of findings (tragets AWS lambda or SNS )
 - can protect against CryptoCurrency Attacks 
 
@@ -502,10 +760,26 @@ detect sensitive data. such as personally identifiable information (PII) -> noti
 
 - windows -> FSx
 
+- smb -> FSx
+
+- **For shared storage between Linux and windows you need to implement Amazon FSx for NetApp ONTAP**(for both NFS and SMB)
+
 
 ## Service Catalog
 
 Service Catalog allows organizations to centrally manage commonly deployed IT services, and helps organizations achieve consistent governance and meet compliance requirements. End users can quickly deploy only the approved IT services they need, following the constraints set by your organization.
 
 - Self-service discovery and launch
+
+## Amazon Pinpoint
+
+tow-way messaging for marketing communication:
+
+Receive SMS messages from your customers and reply back to them in a chat-like interactive experience. With Amazon Pinpoint, you can create automatic responses when customers send you messages that contain certain keywords. You can even use Amazon Lex to create conversational bots. A majority of mobile phone users read incoming SMS messages almost immediately after receiving them. If you need to be able to provide your customers with urgent or important information, SMS messaging may be the right solution for you.
+
+Amazon Pinpoint can stream events to **SNS, Kinese Data Firehosoe, CloudWatch Logs**
+
+## AWS Resource Groups Tag Editor
+
+A solutions architect can provide the quickest solution for identifying all of the tagged components by running running a query with the AWS Resource Groups Tag Editor to report on the resources globally with the application tag, hence the option D is right answer.
 
