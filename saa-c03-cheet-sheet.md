@@ -148,10 +148,6 @@ NAT Gateway will be created Public Subnet and Provide access to Private Subnet
 
 Each NAT gateway is created **in a specific Availability Zone** and implemented with redundancy in that zone.
 
-## Transit Gateway
-
-A *transit gateway* is a network transit hub that you can use to interconnect your **virtual private clouds (VPCs) and on-premises networks**. As your cloud infrastructure expands globally, inter-Region peering connects transit gateways together using the AWS Global Infrastructure. Your data is automatically encrypted and never travels over the public internet.
-
 ## Amazon EC2
 
 - Auto scaling groups can not span multi region
@@ -186,7 +182,15 @@ A *transit gateway* is a network transit hub that you can use to interconnect yo
 
 ## AWS Backup
 
-EC2, RDS, S3
+**EC2, RDS, S3**
+
+- Vault Lock
+
+  AWS Backup Vault Lock provides several benefits, including:
+
+  - WORM (*write-once, read-many*) configuration for all the backups you store and create in a backup vault.
+  - An additional layer of defense that protects backups (recovery points) in your backup vaults from inadvertent or malicious deletions.
+  - **Enforcement of retention periods**, which prevent early deletions by privileged users (including the AWS account root user), and meet your organization’s data protection policies and procedures.
 
 Using AWS Backup is a simple and efficient way to **backup EC2 instances and RDS databases to a separate region**. It requires **minimal operational overhead** and can be easily managed through the AWS Backup console or API. AWS Backup can also provide **automated scheduling and retention management** for backups, which can help ensure that backups are always available and up to date.
 
@@ -200,13 +204,17 @@ AWS Backup allows you to backup your S3 data stored in the following S3 Storage 
 
 **Don't support Glacier Deep**
 
+
+
 ## AWS Transfer Family
 
 For Exam : Whenever you see **SFTP , FTP** look for "Transfer" in options available.
 
 AWS Transfer Family is a fully managed AWS service that you can use to **transfer files into and out of** **Amazon Simple Storage Service (Amazon S3) storage or Amazon Elastic File System (Amazon EFS)** file systems over the following protocols: Secure Shell (SSH) File Transfer Protocol (SFTP): version 3 File Transfer Protocol Secure (FTPS) File Transfer Protocol (FTP) Applicability Statement 2 (AS2)
 
+- Working with custom **identity providers**
 
+  You integrate your identity provider using an AWS Lambda function, which authenticates and authorizes your users for access to Amazon S3 or Amazon Elastic File System (Amazon EFS).
 
 ## Amazon DataSync
 
@@ -447,6 +455,7 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
 - [Encryption by default](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#encryption-by-default) allows you to ensure that **all new EBS volumes created in your account are always encrypted,** even if you don’t specify encrypted=true request parameter.
 - Both GP2 and GP3 has max IOPS 16000 but GP3 is cost effective.
+- Multi-attach is supported exclusively on  [Provisioned IOPS SSD (io1 and io2) volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html#EBSVolumeTypes_piops).
 
 ## Amazon RDS
 
@@ -570,6 +579,8 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
 
 **a subnet is per AZ**
 
+- Private VPC Link
+
 - CIDR blocks
 
 - VPC peering
@@ -595,6 +606,12 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
 - Interface Endpoint
 
   an interface endpoint is a horizontally scaled, redundant VPC endpoint that provides private connectivity to a service. It is an elastic network interface with a private IP address that serves as an entry point for traffic destined to the AWS service. Interface endpoints are used to connect VPCs with AWS services
+
+## Transit Gateway
+
+A *transit gateway* is a network transit hub that you can use to interconnect your **virtual private clouds (VPCs) and on-premises networks**. As your cloud infrastructure expands globally, inter-Region peering connects transit gateways together using the AWS Global Infrastructure. Your data is automatically encrypted and never travels over the public internet.
+
+**Transit Gateway Peering**: Transit Gateway supports **peering connections across AWS Regions**, allowing you to establish connectivity between VPCs in different Regions without the need for complex VPC peering configurations. This simplifies the management of VPC communications across Regions.
 
 ## Amazon Rekognition
 
@@ -663,6 +680,10 @@ rolling development
 ## AWS SageMaker
 
 Amazon SageMaker is a fully managed **machine learning service**. With SageMaker, data scientists and developers can quickly and easily build and train machine learning models, and then directly deploy them into a production-ready hosted environment. It provides an integrated Jupyter authoring notebook instance for easy access to your data sources for exploration and analysis, so you don't have to manage servers. It also provides common machine learning algorithms that are optimized to run efficiently against extremely large data in a distributed environment. With native support for bring-your-own-algorithms and frameworks, SageMaker offers flexible distributed training options that adjust to your specific workflows. Deploy a model into a secure and scalable environment by launching it with a few clicks from SageMaker Studio or the SageMaker console.
+
+## Amazon AppFlow
+
+Amazon AppFlow is a fully-managed integration service that enables you to securely exchange data between software as a service **(SaaS) applications, such as Salesforce,** and AWS services, such as Amazon Simple Storage Service (Amazon S3) and Amazon Redshift
 
 ## AWS Certificate Manager(ACM)
 
@@ -828,4 +849,10 @@ Amazon Pinpoint can stream events to **SNS, Kinese Data Firehosoe, CloudWatch Lo
 ## AWS Resource Groups Tag Editor
 
 A solutions architect can provide the quickest solution for identifying all of the tagged components by running running a query with the AWS Resource Groups Tag Editor to report on the resources globally with the application tag, hence the option D is right answer.
+
+## Wordload Discovery on AWS
+
+Workload Discovery on AWS can be used to build, customize, and share detailed visualizations of the resources in your AWS accounts based on near real time data. The solution works by **maintaining an inventory** of the AWS resources across your accounts and various Regions, **mapping relationships** between them, and displaying them in an easy-to-use web user interface. For supported resources, Workload Discovery on AWS also provides a link to the deployed AWS resource, so it can be easily reached on the [AWS Management Console](https://console.aws.amazon.com/).
+
+## AWS Billing
 
