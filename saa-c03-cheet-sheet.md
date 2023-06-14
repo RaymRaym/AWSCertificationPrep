@@ -55,11 +55,19 @@
 
 ## Amazon CloudTrail
 
- CloudTrail provides event history of your AWS account activity, including actions taken through the AWS Management Console, AWS Command Line Interface (CLI), and AWS SDKs and APIs. By enabling CloudTrail, the company **can track user activity and changes to AWS resources, and monitor compliance with internal policies and external regulations.**
+ CloudTrail provides event history of your AWS account activity, including actions taken through the AWS Management Console, AWS Command Line Interface (CLI), and AWS SDKs and APIs. By enabling CloudTrail, the company **can track user activity and changes to AWS resources, and monitor compliance with internal policies and external regulations.	**
+
+## Amazon CloudFormation
+
+AWS CloudFormation is an **infrastructure-as-code service that automates the process of provisioning infrastructure resources.** It provides a way for developers and system administrators to define and manage infrastructure resources in a declarative way. CloudFormation templates describe resources and their relationships, which are then provisioned and managed as a single unit.
 
 ## Amazon S3
 
 S3 is the cheapest and most scalable.
+
+- **S3 Lifecycle policies** 
+
+  allow you to define rules that automatically transition or **expire objects based on their age** or other criteria. By configuring an S3 Lifecycle policy to delete expired object versions and retain only the two most recent versions, you can effectively manage the storage costs while maintaining the desired retention policy. This solution is highly automated and requires minimal operational overhead as the lifecycle management is handled by S3 itself.
 
 - Configuring fast, secure file transfers using **Amazon S3 Transfer Acceleration**
 
@@ -557,6 +565,16 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
   use cases: web session handling
 
+- DynamoDB offers two built-in backup methods:
+
+  - [On-demand](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/BackupRestore.html): Create backups when you choose.
+
+  - [Point-in-time recovery](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery.html): Turn on automatic and continuous backups.
+
+    DynamoDB Export to S3 feature
+
+    Using this feature, you can export data from an Amazon DynamoDB table anytime within your point-in-time recovery window to an Amazon S3 bucket. For more information, see [DynamoDB data export to Amazon S3](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
+
 ## Amazon Database Migration Service(DMS)
 
 - Create an ongoing replication task: 
@@ -606,6 +624,10 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
 - Interface Endpoint
 
   an interface endpoint is a horizontally scaled, redundant VPC endpoint that provides private connectivity to a service. It is an elastic network interface with a private IP address that serves as an entry point for traffic destined to the AWS service. Interface endpoints are used to connect VPCs with AWS services
+
+- AWS Direct Connect
+  - **Dedicated connections**, where a physical ethernet connection is associated with a single customer. You can order port speeds of 1, 10, or 100 Gbps. You might need to work with a partner in the AWS Direct Connect Partner Program to help you establish network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
+  - **Hosted connections**, where a physical ethernet connection is provisioned by an **AWS Direct Connect Partner** and shared with you. You can order port speeds between 50 Mbps and 10 Gbps. Your work with the Partner in both the AWS Direct Connect connection they established and the network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
 
 ## Transit Gateway
 
@@ -680,6 +702,10 @@ rolling development
 ## AWS SageMaker
 
 Amazon SageMaker is a fully managed **machine learning service**. With SageMaker, data scientists and developers can quickly and easily build and train machine learning models, and then directly deploy them into a production-ready hosted environment. It provides an integrated Jupyter authoring notebook instance for easy access to your data sources for exploration and analysis, so you don't have to manage servers. It also provides common machine learning algorithms that are optimized to run efficiently against extremely large data in a distributed environment. With native support for bring-your-own-algorithms and frameworks, SageMaker offers flexible distributed training options that adjust to your specific workflows. Deploy a model into a secure and scalable environment by launching it with a few clicks from SageMaker Studio or the SageMaker console.
+
+## Amazon Comprehend
+
+Amazon Comprehend uses **natural language processing (NLP)** to extract insights about the content of documents. It develops insights by recognizing the entities, key phrases, language, sentiments, and other common elements in a document. Use Amazon Comprehend to create new products based on understanding the structure of documents. For example, using Amazon Comprehend you can search social networking feeds for mentions of products or scan an entire document repository for key phrases.
 
 ## Amazon AppFlow
 
