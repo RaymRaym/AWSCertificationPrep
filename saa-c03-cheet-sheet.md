@@ -150,11 +150,7 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
 
   *API keys* are alphanumeric string values that you distribute to application developer customers to grant access to your API. You can use API keys together with [Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html), [IAM roles](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html), or [Amazon Cognito](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html) to control access to your APIs. API Gateway can generate API keys on your behalf, or you can import them from a [CSV file](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-key-file-format.html). You can generate an API key in API Gateway, or import it into API Gateway from an external source. For more information, see [Set up API keys using the API Gateway console](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-setup-api-key-with-console.html).
 
-## NAT Gateway
 
-NAT Gateway will be created Public Subnet and Provide access to Private Subnet
-
-Each NAT gateway is created **in a specific Availability Zone** and implemented with redundancy in that zone.
 
 ## Amazon EC2
 
@@ -589,17 +585,27 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
 - Portable Operating System Interface (POSIX) 
 
-## VPC
+## VPC (Virtual Private Cloud)
 
-vpc != subnet
+A new AWS account has a default VPC. When you create an EC2 instance, it is automatically being added into this VPC. This defualt VPC has Internet Access, And the EC2 instance has a public IPv4 address.
 
-A vpc spans all of the availability Zones in a Region,After you create a VPC, you can add one or more subnets in each Availability Zone.
-
-**a subnet is per AZ**
+A vpc spans all of the availability Zones in a Region,After you create a VPC, you can add one or more subnets in each Availability Zone.**a subnet is per AZ**, **AWS reserves 5 IP Addresses(first 4 & last 1) in each subnet**
 
 - Private VPC Link
 
-- CIDR blocks
+- CIDR blocks 
+
+  A CIDR consists of tow components
+
+  - Base IP
+
+  - Subnet Mask
+
+    /0, /24, /32, **in AWS VPC, min is 16 max is 24**
+
+    ![image-20230616105049846](saa-c03-cheet-sheet.assets/image-20230616105049846.png)
+
+    ![image-20230616105647531](saa-c03-cheet-sheet.assets/image-20230616105647531.png)
 
 - VPC peering
 
@@ -628,6 +634,68 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
 - AWS Direct Connect
   - **Dedicated connections**, where a physical ethernet connection is associated with a single customer. You can order port speeds of 1, 10, or 100 Gbps. You might need to work with a partner in the AWS Direct Connect Partner Program to help you establish network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
   - **Hosted connections**, where a physical ethernet connection is provisioned by an **AWS Direct Connect Partner** and shared with you. You can order port speeds between 50 Mbps and 10 Gbps. Your work with the Partner in both the AWS Direct Connect connection they established and the network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
+
+## Internet Gateway(IGW) & Route tables 
+
+Allows resources in a VPC connect to the Internet
+
+Scales horizontally and is highly available and redundant
+
+must be **created seperately from a VPC**
+
+**one VPC can only be attaced to one IGW and vice verss**
+
+Internet Gateway on their own do not allow Internet access. **Route tables** must also be edited
+
+![image-20230616112235361](saa-c03-cheet-sheet.assets/image-20230616112235361.png)
+
+## Bastion Host 
+
+A bastion host is **a server used to manage access to an internal or private network from an external network** - sometimes called a jump box or jump server. Because bastion hosts often sit on the Internet, they typically run a minimum amount of services in order to reduce their attack surface.
+
+![image-20230616113500760](saa-c03-cheet-sheet.assets/image-20230616113500760.png)
+
+All above only guarantees that the private EC2s can be connected by SSH through Bastion Hosts, they still has no access to the outer Internet.
+
+## NAT Gateway
+
+NAT = Network Address Translation
+
+NAT Gateway will be created in a Public Subnet and Provide access to Private Subnet
+
+Each NAT gateway is created **in a specific Availability Zone** **using an Elastic IP** and implemented with redundancy in that zone.
+
+also require an IGW (private subnet => NATGW => IGW)
+
+![image-20230616120114953](saa-c03-cheet-sheet.assets/image-20230616120114953.png)
+
+![image-20230616120257337](saa-c03-cheet-sheet.assets/image-20230616120257337.png)
+
+## Security Groups & NACLs
+
+NACL is outer layer and stateless.
+
+SG is inner layer and stateful.
+
+![image-20230616121151994](saa-c03-cheet-sheet.assets/image-20230616121151994.png)
+
+![image-20230616122612026](saa-c03-cheet-sheet.assets/image-20230616122612026.png)
+
+## Network Access Control List(NACL)
+
+NACL  is like a firewall which control traffic from and to subnets. **One NACL per subnet**.
+
+**First rule match will drive the decision.**
+
+**Newly created NACLs will deny everything. Default NACL accpets everything inbound/outbound with the subnets it's associated with**
+
+Do not modify the default one, instead create custom NACLs
+
+NACLs are a great way o blocking a specific IP address at the subnet level.  
+
+**NACL with Ephemreal Ports**
+
+![image-20230616122346943](saa-c03-cheet-sheet.assets/image-20230616122346943.png)
 
 ## Transit Gateway
 
