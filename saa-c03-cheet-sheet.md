@@ -609,14 +609,18 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
 
 - VPC peering
 
-  A VPC peering connection is a networking connection between two VPCs that enables you to route traffic between them privately. Resources in peered VPCs can communicate with each other as if they are within the same network. You can create a VPC peering connection between your own VPCs, with a VPC in another AWS account, or with a VPC in a different AWS Region. Traffic between peered VPCs never traverses the public internet.
+  A VPC peering connection is a networking connection between two VPCs that enables you to route traffic between them **privately**. Resources in peered VPCs can communicate with each other as if they are within the same network. You can create a VPC peering connection **between your own VPCs, with a VPC in another AWS account, or with a VPC in a different AWS Region**.  You can reference a security group in a peered VPC. Traffic between peered VPCs never traverses the public internet. 
+
+  VPC Peering is not transitive.
+
+  ![image-20230618160726748](saa-c03-cheet-sheet.assets/image-20230618160726748.png)
 
 - Traffic Mirroring
 
   Traffic Mirroring is an Amazon VPC feature that you can use to copy network traffic from an elastic network interface of type `interface`. You can then send the traffic to out-of-band security and monitoring appliances for:
 
   - Content inspection
-  - Threat monitoring
+  - Threat monitoring 
   - Troubleshooting
 
   The security and monitoring appliances can be deployed as individual instances, or as a fleet of instances behind either a Network Load Balancer or a Gateway Load Balancer with a UDP listener. Traffic Mirroring supports filters and packet truncation, so that you can extract only the traffic of interest, using the monitoring tools of your choice.
@@ -627,13 +631,42 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
 
   A VPC endpoint enables **private connectivity between the VPC and S3 / DynamoDB without using an internet gateway or NAT device.** 
 
+  VPC Endpoints **(powered by AWS PrivateLink)** allows you to connect to AWS services using a private network instead of using the public Internet.
+
+  ![image-20230618161726556](saa-c03-cheet-sheet.assets/image-20230618161726556.png)
+
+  ![image-20230618162315478](saa-c03-cheet-sheet.assets/image-20230618162315478.png)
+
 - Interface Endpoint
 
   an interface endpoint is a horizontally scaled, redundant VPC endpoint that provides private connectivity to a service. It is an elastic network interface with a private IP address that serves as an entry point for traffic destined to the AWS service. Interface endpoints are used to connect VPCs with AWS services
 
+  ![image-20230618162520626](saa-c03-cheet-sheet.assets/image-20230618162520626.png)
+
 - AWS Direct Connect
-  - **Dedicated connections**, where a physical ethernet connection is associated with a single customer. You can order port speeds of 1, 10, or 100 Gbps. You might need to work with a partner in the AWS Direct Connect Partner Program to help you establish network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
-  - **Hosted connections**, where a physical ethernet connection is provisioned by an **AWS Direct Connect Partner** and shared with you. You can order port speeds between 50 Mbps and 10 Gbps. Your work with the Partner in both the AWS Direct Connect connection they established and the network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
+
+  private connection
+
+  Lead times are often longer than 1 month to establish a new connection
+
+  - **Dedicated connections**, where a physical ethernet connection is associated with a single customer. You can order port s**peeds of 1, 10, or 100 Gbps**. You might need to work with a partner in the **AWS Direct Connect Partner** Program to help you establish network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
+  - **Hosted connections**, where a physical ethernet connection is provisioned by an **AWS Direct Connect Partner** and shared with you. You can order port speeds between **50 Mbps, 500Mbps and 10 Gbps**. Your work with the Partner in both the AWS Direct Connect connection they established and the network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
+
+  ![image-20230618170429014](saa-c03-cheet-sheet.assets/image-20230618170429014.png)
+
+  ![image-20230618170858771](saa-c03-cheet-sheet.assets/image-20230618170858771.png)
+
+- VPC Flow Log
+
+  can be sent to S3, CloudWatch, Kinesis Data Firehose
+
+- Site-to-Site VPN
+
+  use site-to-site VPN as a backup for DX
+
+  
+
+  ![image-20230618164733159](saa-c03-cheet-sheet.assets/image-20230618164733159.png)
 
 ## Internet Gateway(IGW) & Route tables 
 
@@ -671,6 +704,10 @@ also require an IGW (private subnet => NATGW => IGW)
 
 ![image-20230616120257337](saa-c03-cheet-sheet.assets/image-20230616120257337.png)
 
+## Egress-only Internet Gateway
+
+like a NAT Gateway, but for APv6
+
 ## Security Groups & NACLs
 
 NACL is outer layer and stateless.
@@ -699,11 +736,15 @@ NACLs are a great way o blocking a specific IP address at the subnet level.
 
 ## Transit Gateway
 
+transitive peering connections for VPC, VPN & DX
+
 A *transit gateway* is a network transit hub that you can use to interconnect your **virtual private clouds (VPCs) and on-premises networks**. As your cloud infrastructure expands globally, inter-Region peering connects transit gateways together using the AWS Global Infrastructure. Your data is automatically encrypted and never travels over the public internet.
 
 **Transit Gateway Peering**: Transit Gateway supports **peering connections across AWS Regions**, allowing you to establish connectivity between VPCs in different Regions without the need for complex VPC peering configurations. This simplifies the management of VPC communications across Regions.
 
-## Amazon Rekognition
+
+
+## ![image-20230618171236256](saa-c03-cheet-sheet.assets/image-20230618171236256.png)Amazon Rekognition
 
 Amazon Rekognition makes it easy to add image and video analysis to your applications. You just provide an image or video to the Amazon Rekognition API, and the service can identify objects, people, text, scenes, and activities. It can detect any inappropriate content as well. Amazon Rekognition also provides highly accurate facial analysis and facial recognition. With Amazon Rekognition Custom Labels, you can create a machine learning model that finds the objects, scenes, and concepts that are specific to your business needs.
 
