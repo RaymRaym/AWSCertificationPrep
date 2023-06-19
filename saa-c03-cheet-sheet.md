@@ -8,6 +8,10 @@
 
   A solutions architect wants all new users to have specific complexity requirements and mandatory rotation periods for IAM user passwords.
 
+## Amazon EventBridge
+
+When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an event that is sent to Amazon EventBridge (formerly known as Amazon CloudWatch Events). You can use Amazon EventBridge to detect and react to these events. You do this by creating rules in EventBridge that trigger an action in response to an event. **For example, you can create an EventBridge rule that detects when the AMI creation process has completed and then invokes an Amazon SNS topic to send an email notification to you.**
+
 ## AWS Lambda Function
 
 - CloudWatch Events EventBridge -> trigger every certain time -> AWS lambda function perofrom a task
@@ -271,7 +275,7 @@ spot fleet = spot Instances + on-demand
 
 - Using AWS Lambda with **CloudFront Lambda@Edge**
 
-  Lambda@Edge lets you run Node.js and Python Lambda functions to customize content that CloudFront delivers, executing the functions in AWS locations closer to the viewer. The functions run in response to CloudFront events, without provisioning or managing servers.
+  Lambda@Edge lets you run **Node.js and Python** Lambda functions to customize content that CloudFront delivers, executing the functions in AWS locations closer to the viewer. The functions run in response to CloudFront events, without provisioning or managing servers.
 
   - Inspect cookies to rewrite URLs to different versions of a site for A/B testing.
   - **Send different objects to your users based on the `User-Agent` header,** which contains information about the device that submitted the request. For example, you can send images in different resolutions to users based on their devices.
@@ -443,6 +447,9 @@ The most cost-effective solution for **addressing high ReadIOPS and CPU utilizat
 
 - **Migrating data from an external MySQL database to an Amazon Aurora MySQL DB cluster  by using an Amazon S3 bucket**
 
+- Migrate an Oracle database to Aurora PostgreSQL using AWS DMS (AWS Data Migration Service ) and AWS SCT(AWS Schema Conversion Tool)
+
+
 ## Amazon QuickSight
 
 QuickSight **don't support IAM. We use users and groups** to view the QuickSight dashboard
@@ -606,6 +613,18 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
     ![image-20230616105049846](saa-c03-cheet-sheet.assets/image-20230616105049846.png)
 
     ![image-20230616105647531](saa-c03-cheet-sheet.assets/image-20230616105647531.png)
+
+- VPC Flow Logs
+
+  VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC. Flow log data can be published to the following locations: Amazon CloudWatch Logs, Amazon S3, or Amazon Kinesis Data Firehose. After you create a flow log, you can retrieve and view the flow log records in the log group, bucket, or delivery stream that you configured. Flow logs can help you with a number of tasks, such as: 
+
+  - DRP or SSH
+
+  - Diagnosing overly restrictive security group rules 
+
+  - Monitoring the traffic that is reaching your instance 
+
+  - Determining the direction of the traffic to and from the network interfaces
 
 - VPC peering
 
@@ -969,7 +988,7 @@ detect sensitive data. such as personally identifiable information (PII) -> noti
 
 ## Service Catalog
 
-Service Catalog allows organizations to centrally manage commonly deployed IT services, and helps organizations achieve consistent governance and meet compliance requirements. End users can quickly deploy only the approved IT services they need, following the constraints set by your organization.
+Service Catalog allows organizations to **centrally manage** commonly deployed IT services, and helps organizations achieve consistent governance and meet compliance requirements. End users can quickly deploy only the approved IT services they need, following the constraints set by your organization.
 
 - Self-service discovery and launch
 
