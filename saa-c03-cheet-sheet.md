@@ -158,6 +158,10 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
 
 ## Amazon EC2
 
+-  Hibernate: 
+
+  To **preserve contents of the instance's memory** whenever the instance is unavailable.
+
 - Auto scaling groups can not span multi region
 
 - Amazon EC2 Auto Scaling lifecycle hooks
@@ -504,7 +508,7 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
 - **RDS Multi-AZ = Synchronous = Disaster Recovery (DR)**
 
-   By using Multi-AZ deployment, the company can achieve an RPO of less than 1 second because the standby instance is always in sync with the primary instance, ensuring that data changes are continuously replicated.
+   By using Multi-AZ deployment, the company can achieve an **RPO of less than 1 second** because the standby instance is always in sync with the primary instance, ensuring that data changes are continuously replicated.
 
 - **Read Replica = Asynchronous**
 
