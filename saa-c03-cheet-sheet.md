@@ -1,3 +1,19 @@
+## AWS Organizations
+
+- Global service
+
+- Allows to manage multiple AWS accounts
+
+- **Consolidated Billing**
+
+- do **central manangement**
+
+- share reserved instances and savings plans discounts across accounts
+
+- Service Control Policies (SCP)
+
+  ![image-20230621233409838](saa-c03-cheet-sheet.assets/image-20230621233409838.png)
+
 ## IAM
 
 - Providing access to AWS accounts owned by third parties
@@ -8,9 +24,25 @@
 
   A solutions architect wants all new users to have specific complexity requirements and mandatory rotation periods for IAM user passwords.
 
+- IAM Conditions
+
+  <ins>aws:SourceIP</ins> : restrict the client from wich the API calls are being made
+
+  <ins>aws:RequestedRegion</ins>
+
+  <ins>ec2:ResouceTag</ins>
+
+  <ins>aws:MultiFactorAuthPresent</ins>
+
+  <ins>aws:PrincipalOrgID</ins>
+
+  ![image-20230621235019260](saa-c03-cheet-sheet.assets/image-20230621235019260.png)
+
 ## Amazon EventBridge
 
 When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an event that is sent to Amazon EventBridge (formerly known as Amazon CloudWatch Events). You can use Amazon EventBridge to detect and react to these events. You do this by creating rules in EventBridge that trigger an action in response to an event. **For example, you can create an EventBridge rule that detects when the AMI creation process has completed and then invokes an Amazon SNS topic to send an email notification to you.**
+
+![image-20230621235153280](saa-c03-cheet-sheet.assets/image-20230621235153280.png)
 
 ## AWS Lambda Function
 
@@ -795,8 +827,6 @@ Amazon Transcribe is a service that **automatically transcribes spoken language 
 
 - PII redaction
 
-
-
 ## Amazon Cognito
 
 To control access to the REST API and reduce development efforts, the company can use an **Amazon Cognito user pool authorizer in API Gateway**. This will allow Amazon Cognito to validate each request and ensure that only authenticated users can access the API. This solution has the **LEAST operational overhead**, as it does not require the company to develop and maintain any additional infrastructure or code.
@@ -1013,4 +1043,8 @@ A solutions architect can provide the quickest solution for identifying all of t
 Workload Discovery on AWS can be used to build, customize, and share detailed visualizations of the resources in your AWS accounts based on near real time data. The solution works by **maintaining an inventory** of the AWS resources across your accounts and various Regions, **mapping relationships** between them, and displaying them in an easy-to-use web user interface. For supported resources, Workload Discovery on AWS also provides a link to the deployed AWS resource, so it can be easily reached on the [AWS Management Console](https://console.aws.amazon.com/).
 
 ## AWS Billing
+
+## AWS Trusted Advisor
+
+
 
