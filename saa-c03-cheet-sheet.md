@@ -38,6 +38,14 @@
 
   ![image-20230621235019260](saa-c03-cheet-sheet.assets/image-20230621235019260.png)
 
+![image-20230622093306203](saa-c03-cheet-sheet.assets/image-20230622093306203.png)
+
+## AWS IAM Identity Center
+
+One login(single sign-on) for all your AWS accounts in AWS Organizations
+
+![image-20230622093859893](saa-c03-cheet-sheet.assets/image-20230622093859893.png)
+
 ## Amazon EventBridge
 
 When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an event that is sent to Amazon EventBridge (formerly known as Amazon CloudWatch Events). You can use Amazon EventBridge to detect and react to these events. You do this by creating rules in EventBridge that trigger an action in response to an event. **For example, you can create an EventBridge rule that detects when the AMI creation process has completed and then invokes an Amazon SNS topic to send an email notification to you.**
@@ -68,7 +76,9 @@ When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an
 
   **The Lambda function must be deployed in your VPC, because RDS Proxy is never pubilcly accessible.**
 
-- Provisioned concurrency 
+- **Provisioned concurrency** 
+
+  Provisioned concurrency is the number of pre-initialized execution environments you want to allocate to your function. T**hese execution environments are prepared to respond immediately to incoming function requests**. Configuring provisioned concurrency incurs charges to your AWS account.
 
   Configuring provisioned concurrency would get rid of the "cold start" of the function therefore speeding up the proccess.
 
@@ -92,6 +102,12 @@ When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an
 ## Amazon CloudTrail
 
  CloudTrail provides event history of your AWS account activity, including actions taken through the AWS Management Console, AWS Command Line Interface (CLI), and AWS SDKs and APIs. By enabling CloudTrail, the company **can track user activity and changes to AWS resources, and monitor compliance with internal policies and external regulations.	**
+
+## AWS Config
+
+Configuration changes= AWS Config
+
+AWS Config provides a detailed view of the resources associated with your AWS account, including how they are configured, how they are related to one another, and how the configurations and their relationships have **changed over time**.
 
 ## Amazon CloudFormation
 
@@ -180,7 +196,7 @@ cached / stored
 
 AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, different environments, security
 
-- usage plan and API keys [subscription, control access]
+- **usage plan and API keys [subscription, control access]**
 
   A *usage plan* specifies who can access one or more deployed API stages and methods—and optionally sets the target request rate to start throttling requests. The plan uses API keys to identify API clients and who can access the associated API stages for each key.
 
@@ -196,7 +212,7 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
 
 - Auto scaling groups can not span multi region
 
-- Amazon EC2 Auto Scaling lifecycle hooks
+- **Amazon EC2 Auto Scaling lifecycle hooks**
 
   Amazon EC2 Auto Scaling offers the ability to add lifecycle hooks to your Auto Scaling groups. These hooks let you create solutions that a**re aware of events in the Auto Scaling instance lifecycle, and then perform a custom action on instances when the corresponding lifecycle event occurs**. A lifecycle hook provides a specified amount of time (one hour by default) to wait for the action to complete before the instance transitions to the next state.
 
@@ -212,7 +228,7 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
 
 - Amazon EC2 Dedicated Hosts 
 
-  **allow you to use your eligible software licenses from vendors** such as Microsoft and Oracle on Amazon EC2, so that you get the flexibility and cost effectiveness of using your own licenses, but with the resiliency, simplicity and elasticity of AWS. An Amazon EC2 Dedicated Host is a physical server fully dedicated for your use, so you can help address corporate compliance requirements.
+  **Amazon EC2 Dedicated Hosts allow you to use your eligible software licenses from vendors** such as Microsoft and Oracle on Amazon EC2, so that you get the flexibility and cost effectiveness of using your own licenses, but with the resiliency, simplicity and elasticity of AWS. An Amazon EC2 Dedicated Host is a physical server fully dedicated for your use, so you can help address corporate compliance requirements.
 
   Amazon EC2 Dedicated Host is also integrated with AWS License Manager, a service which helps you manage your software licenses, including Microsoft Windows Server and Microsoft SQL Server licenses. In License Manager, you can specify your licensing terms for governing license usage, as well as your Dedicated Host management preferences for host allocation and host capacity utilization. Once setup, AWS takes care of these administrative tasks on your behalf, so that you can seamlessly launch virtual machines (instances) on Dedicated Hosts just like you would launch an EC2 instance with AWS provided licenses.
 
@@ -223,32 +239,6 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
   AWS Fargate is a technology that you can use with Amazon ECS to run containers without having to manage servers or clusters of Amazon EC2 instances. With Fargate, you no longer have to provision, configure, or scale clusters of virtual machines to run containers. This removes the need to choose server types, decide when to scale your clusters, or optimize cluster packing. 
 
 - To ensure that an Amazon Elastic Container Service (ECS) application has permission to access Amazon Simple Storage Service (S3), the correct solution is to create an AWS Identity and Access Management (IAM) role with the necessary S3 permissions and specify that role as the taskRoleArn(Amazon Resource Name) in the task definition for the ECS application. 
-
-## AWS Backup
-
-**EC2, RDS, S3**
-
-- Vault Lock
-
-  AWS Backup Vault Lock provides several benefits, including:
-
-  - WORM (*write-once, read-many*) configuration for all the backups you store and create in a backup vault.
-  - An additional layer of defense that protects backups (recovery points) in your backup vaults from inadvertent or malicious deletions.
-  - **Enforcement of retention periods**, which prevent early deletions by privileged users (including the AWS account root user), and meet your organization’s data protection policies and procedures.
-
-Using AWS Backup is a simple and efficient way to **backup EC2 instances and RDS databases to a separate region**. It requires **minimal operational overhead** and can be easily managed through the AWS Backup console or API. AWS Backup can also provide **automated scheduling and retention management** for backups, which can help ensure that backups are always available and up to date.
-
-AWS Backup allows you to backup your S3 data stored in the following S3 Storage Classes: 
-
-- S3 Standard 
-- S3 Standard - Infrequently Access (IA) 
-- S3 One Zone-IA 
-- S3 Glacier Instant Retrieval
-- S3 Intelligent-Tiering (S3 INT)
-
-**Don't support Glacier Deep**
-
-
 
 ## AWS Transfer Family
 
@@ -281,7 +271,7 @@ can do
 
 ## Network Load Balancer
 
-layer 4 ( TCP / UDP / TLS)
+layer 4 ( TCP / UDP / **TLS)**
 
 ## Gateway Load balancer
 
@@ -311,18 +301,18 @@ spot fleet = spot Instances + on-demand
 
 - Using AWS Lambda with **CloudFront Lambda@Edge**
 
-  Lambda@Edge lets you run **Node.js and Python** Lambda functions to customize content that CloudFront delivers, executing the functions in AWS locations closer to the viewer. The functions run in response to CloudFront events, without provisioning or managing servers.
+  Lambda@Edge lets you run **Node.js and Python** Lambda functions to **customize content that CloudFront delivers**, executing the functions in AWS locations closer to the viewer. The functions run in response to CloudFront events, without provisioning or managing servers.
 
   - Inspect cookies to rewrite URLs to different versions of a site for A/B testing.
-  - **Send different objects to your users based on the `User-Agent` header,** which contains information about the device that submitted the request. For example, you can send images in different resolutions to users based on their devices.
+  - **Send different objects to your users based on the `User-Agent` header,** which contains information about the device that submitted the request. **For example, you can send images in different resolutions to users based on their devices.**
   - **Inspect headers or authorized tokens**, inserting a corresponding header and allowing access control before forwarding a request to the origin.
   - Add, delete, and modify headers, and rewrite the URL path to direct users to different objects in the cache.
   - Generate new HTTP responses to do things like redirect unauthenticated users to login pages, or create and deliver static webpages right from the edge.
   - Resizing Images
 
-- Field-level Encrpytion
+- **Field-level Encrpytion**
 
-  Field-level encryption allows you to enable your users to securely upload sensitive information to your web servers. The sensitive information provided by your users is encrypted at the edge, close to the user, and remains encrypted throughout your entire application stack
+  Field-level encryption allows you to enable your users to securely upload sensitive information to your web servers. **The sensitive information provided by your users is encrypted at the edge, close to the user, and remains encrypted throughout your entire application stack**
 
 - origin access identity (OAI)
 
@@ -374,8 +364,6 @@ Amazon Kinesis Data Firehose, which is a fully managed service that can automati
 **near-real-time data querying** = Kinesis analytics
 
 With Amazon Kinesis Data Analytics for SQL Applications, you can process and analyze streaming data using standard SQL. The service enables you to quickly author and run powerful SQL code against streaming sources to perform time series analytics, feed real-time dashboards, and create real-time metrics.
-
-
 
 ## Amazon Kinesis Data Streams
 
@@ -476,6 +464,8 @@ Aurora is a fully managed, MySQL-compatible relational database that is designed
 The most cost-effective solution for **addressing high ReadIOPS and CPU utilization when running large reports would be to migrate the monthly reporting to an Aurora Replica**. An Aurora Replica is a read-only copy of an Aurora database that is updated in real-time with the primary database. By using an Aurora Replica for running large reports, the primary database will be relieved of the additional read load, improving performance for the ecommerce application
 
 - **Amazon Aurora Serverless**
+
+  Amazon Aurora Serverless for MySQL is a fully managed, auto-scaling relational database service that scales up or down automatically based on the application demand. This service provides all the capabilities of Amazon Aurora, such as high availability, durability, and security, **without requiring the customer to provision any database instances.** 
 
 - Amazon Aurora global databases
 
@@ -614,19 +604,13 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
     Using this feature, you can export data from an Amazon DynamoDB table anytime within your point-in-time recovery window to an Amazon S3 bucket. For more information, see [DynamoDB data export to Amazon S3](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
 
-## Amazon Database Migration Service(DMS)
-
-- Create an ongoing replication task: 
-
-  An ongoing replication task can be used to **continuously replicate** data from the on-premises database to the Aurora database. This will ensure that the Aurora database remains in sync with the on-premises database.
-
 ## EFS
 
 - Linux 
 
 - Concurrent or at the same time key word for EFS
 
-- Portable Operating System Interface (POSIX) 
+- **Portable Operating System Interface (POSIX)** 
 
 ## VPC (Virtual Private Cloud)
 
@@ -698,18 +682,18 @@ A vpc spans all of the availability Zones in a Region,After you create a VPC, yo
 
   ![image-20230618162520626](saa-c03-cheet-sheet.assets/image-20230618162520626.png)
 
-- AWS Direct Connect
+## AWS Direct Connect
 
-  private connection
+private connection
 
-  Lead times are often longer than 1 month to establish a new connection
+Lead times are often l**onger than 1 month to establish** a new connection
 
-  - **Dedicated connections**, where a physical ethernet connection is associated with a single customer. You can order port s**peeds of 1, 10, or 100 Gbps**. You might need to work with a partner in the **AWS Direct Connect Partner** Program to help you establish network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
-  - **Hosted connections**, where a physical ethernet connection is provisioned by an **AWS Direct Connect Partner** and shared with you. You can order port speeds between **50 Mbps, 500Mbps and 10 Gbps**. Your work with the Partner in both the AWS Direct Connect connection they established and the network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
+- **Dedicated connections**, where a physical ethernet connection is associated with a single customer. You can order port s**peeds of 1, 10, or 100 Gbps**. You might need to work with a partner in the **AWS Direct Connect Partner** Program to help you establish network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
+- **Hosted connections**, where a physical ethernet connection is provisioned by an **AWS Direct Connect Partner** and shared with you. You can order port speeds between **50 Mbps, 500Mbps and 10 Gbps**. Your work with the Partner in both the AWS Direct Connect connection they established and the network circuits between an AWS Direct Connect connection and your data center, office, or colocation environment.
 
-  ![image-20230618170429014](saa-c03-cheet-sheet.assets/image-20230618170429014.png)
+![image-20230618170429014](saa-c03-cheet-sheet.assets/image-20230618170429014.png)
 
-  ![image-20230618170858771](saa-c03-cheet-sheet.assets/image-20230618170858771.png)
+![image-20230618170858771](saa-c03-cheet-sheet.assets/image-20230618170858771.png)
 
 - VPC Flow Log
 
@@ -939,12 +923,6 @@ Session Manager is a fully managed AWS Systems Manager capability. With Session 
 
   the condition key aws:PrincipalOrgID can prevent the members who don't belong to your organization to access the resource
 
-## AWS Config
-
-Configuration changes= AWS Config
-
-AWS Config provides a detailed view of the resources associated with your AWS account, including how they are configured, how they are related to one another, and how the configurations and their relationships have **changed over time**.
-
 ## AWS Cost Explorer
 
 AWS Cost Explorer is a tool that enables you to view and analyze your costs and usage. You can explore your usage and costs using the main graph, the Cost Explorer cost and usage reports, or the Cost Explorer RI reports. You can view data for up to the last 12 months, forecast how much you're likely to spend for the next 12 months, and get recommendations for what Reserved Instances to purchase. You can use Cost Explorer to identify areas that need further inquiry and see trends that you can use to understand your costs.
@@ -989,7 +967,7 @@ can collect information from **VPC Flow Logs, CloudTrail Logs, DNS Logs and EKS 
 
 - Intelligent Threat Discovery to **protect your AWS Account**
 - cant setup EventBridge rules to be notified in case of findings (tragets AWS lambda or SNS )
-- can protect against CryptoCurrency Attacks 
+- **can protect against CryptoCurrency Attacks** 
 
 ## Amazon Inspector
 
@@ -1046,5 +1024,99 @@ Workload Discovery on AWS can be used to build, customize, and share detailed vi
 
 ## AWS Trusted Advisor
 
+## Disaster Recovery(DR)
 
+- RPO and RTO
+
+  ![image-20230622110514534](saa-c03-cheet-sheet.assets/image-20230622110514534.png)
+
+
+
+- Backup and Restore
+
+  cheap
+
+  ![image-20230622110808737](saa-c03-cheet-sheet.assets/image-20230622110808737.png)
+
+- Pilot Light
+
+  a samll version of the app is always runnning in the cloud
+
+  for **critical core**
+
+- Warm Standby
+
+  Full system is up and running, but at minimum size, upon disaster, we can scale to production load
+
+- Hot Site/ Multi Site Approach
+
+  very low RTO - very expensive
+
+  Full Production Scale is running AWS and on Premise 
+
+![image-20230622111810705](saa-c03-cheet-sheet.assets/image-20230622111810705.png)
+
+## Amazon Database Migration Service(DMS)
+
+**sources**: on-premis / EC2 instances databases/ Azure/ RDS / Aurora / S3 / DocumentDB 
+
+**target**: on-premis / EC2 instances databases/ DynamoDB/ Redshift / Aurora / OpenSearch / DocumentDB / Kafka / Redis
+
+ You must create an EC2 instance to perform the replication tasks
+
+- Create an ongoing replication task: 
+
+  An ongoing replication task can be used to **continuously replicate** data from the on-premises database to the Aurora database. This will ensure that the Aurora database remains in sync with the on-premises database.
+
+  In this way, both databases are up and running
+
+## AWS Schema Conversion Tool (SCT)
+
+You do not to use SCT if you are migrating the same DB engines
+
+need to be installed on your on premis server.
+
+![image-20230622112655281](saa-c03-cheet-sheet.assets/image-20230622112655281.png)
+
+![image-20230622113322239](saa-c03-cheet-sheet.assets/image-20230622113322239.png)
+
+## AWS Backup
+
+**EC2, RDS, S3**
+
+tag-based backup
+
+- Vault Lock
+
+  AWS Backup Vault Lock provides several benefits, including:
+
+  - WORM (*write-once, read-many*) configuration for all the backups you store and create in a backup vault.
+  - An additional layer of defense that protects backups (recovery points) in your backup vaults from inadvertent or malicious deletions. Even root user can't delete the backup
+  - **Enforcement of retention periods**, which prevent early deletions by privileged users (including the AWS account root user), and meet your organization’s data protection policies and procedures.
+
+Using AWS Backup is a simple and efficient way to **backup EC2 instances and RDS databases to a separate region**. It requires **minimal operational overhead** and can be easily managed through the AWS Backup console or API. AWS Backup can also provide **automated scheduling and retention management** for backups, which can help ensure that backups are always available and up to date.
+
+AWS Backup allows you to backup your S3 data stored in the following S3 Storage Classes: 
+
+- S3 Standard 
+- S3 Standard - Infrequently Access (IA) 
+- S3 One Zone-IA 
+- S3 Glacier Instant Retrieval
+- S3 Intelligent-Tiering (S3 INT)
+
+**Don't support Glacier Deep**
+
+![image-20230622114025955](saa-c03-cheet-sheet.assets/image-20230622114025955.png)
+
+## AWS Application Discovery Service
+
+Plan migration projects by gathering infromation about on-premises data centers
+
+Agentless Discovery / Agent-based Discovery
+
+Resulting data can be viewd within AWS Migration Hub
+
+## AWS Application Migration Service(MGN)
+
+ ![image-20230622115653678](saa-c03-cheet-sheet.assets/image-20230622115653678.png)
 
