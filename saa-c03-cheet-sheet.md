@@ -52,6 +52,10 @@ When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an
 
 ![image-20230621235153280](saa-c03-cheet-sheet.assets/image-20230621235153280.png)
 
+## AWS Directory Services / MicroSoft Active Directory
+
+Objects are orgnaized in trees. A group of trees is a forest.
+
 ## AWS Lambda Function
 
 - CloudWatch Events EventBridge -> trigger every certain time -> AWS lambda function perofrom a task
@@ -92,6 +96,8 @@ When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an
 
 ## Amazon CloudWatch
 
+- make a dashboard 
+
 - **EC2 do not provide by default memory metrics to CloudWatch and require the CloudWatch Agent to be installed on the monitored instances**
 - You can use metric streams to continually stream CloudWatch metrics to a destination of your choice, with **near-real-time** delivery and low latency. One of the use cases is Data Lake: create a metric stream and direct it to an Amazon Kinesis Data Firehose delivery stream that delivers your CloudWatch metrics to a data lake such as Amazon S3. 
 
@@ -107,7 +113,13 @@ When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an
 
 Configuration changes= AWS Config
 
+per-region
+
 AWS Config provides a detailed view of the resources associated with your AWS account, including how they are configured, how they are related to one another, and how the configurations and their relationships have **changed over time**.
+
+- Config Rules
+
+  Rules can be evaluated / triggered
 
 ## Amazon CloudFormation
 
@@ -295,6 +307,10 @@ spot fleet = spot Instances + on-demand
 
 ## Amazon CloudFront
 
+**ALB, EC2, S3 (static S3 website), Any HTTP backend**
+
+ALB and EC2 must be public.
+
 - CloudFront caches the static content. **It also accepts requests for dynamic content and forward it to the ALB via AWS backbone (very fast).**
 
 - CloudFront offers several options for streaming your media to global viewers—**both pre-recorded files and live events.**
@@ -314,7 +330,7 @@ spot fleet = spot Instances + on-demand
 
   Field-level encryption allows you to enable your users to securely upload sensitive information to your web servers. **The sensitive information provided by your users is encrypted at the edge, close to the user, and remains encrypted throughout your entire application stack**
 
-- origin access identity (OAI)
+- origin access identity (OAI) / origin Access Control (OAC)
 
   I want to restrict access to my Amazon Simple Storage Service (Amazon S3) bucket so that objects can be a**ccessed only through my Amazon CloudFront distribution**. How can I do that? Create a CloudFront origin access identity (OAI)
 
@@ -322,7 +338,13 @@ spot fleet = spot Instances + on-demand
 
 ## AWS Global Accelerator
 
-TCP / UDP
+**TCP / UDP, gaming, IoT, Voice over IP(VoIP)**
+
+health check
+
+AWS shield
+
+no cache
 
 ## AWS Batch
 
@@ -414,6 +436,8 @@ RDS, Aurora, Redshit, Athena, S3, OpenSearchm Timestream. Salesforce, Jira, on-p
 
 **Users and Groups**
 
+QuickSight **don't support IAM. We use users and groups** to view the QuickSight dashboard
+
 ## Amazon Glue
 
 - AWS Glue allows fully managed **CSV to Parquet** conversion jobs
@@ -474,11 +498,6 @@ The most cost-effective solution for **addressing high ReadIOPS and CPU utilizat
 - **Migrating data from an external MySQL database to an Amazon Aurora MySQL DB cluster  by using an Amazon S3 bucket**
 
 - Migrate an Oracle database to Aurora PostgreSQL using AWS DMS (AWS Data Migration Service ) and AWS SCT(AWS Schema Conversion Tool)
-
-
-## Amazon QuickSight
-
-QuickSight **don't support IAM. We use users and groups** to view the QuickSight dashboard
 
 ## Amazon Elastic Block Store (Amazon EBS)
 
@@ -598,10 +617,12 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
   - [On-demand](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/BackupRestore.html): Create backups when you choose.
 
-  - [Point-in-time recovery](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery.html): Turn on automatic and continuous backups.
+    On demand backups are designed **for long-term archiving and retention**, which is typically used to help customers meet compliance and regulatory requirements.
+
+  - **[Point-in-time recovery](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery.html): Turn on automatic and continuous backups.**
 
     DynamoDB Export to S3 feature
-
+  
     Using this feature, you can export data from an Amazon DynamoDB table anytime within your point-in-time recovery window to an Amazon S3 bucket. For more information, see [DynamoDB data export to Amazon S3](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
 
 ## EFS
@@ -869,7 +890,7 @@ Integration with(Load TLS Certificates on)
 
 ## AWS Secrets Manager
 
-AWS Secrets Manager is a secrets management service that helps you protect access to your applications, services, and IT resources. This service enables you to rotate, manage, and retrieve database credentials, API keys, and other secrets throughout their lifecycle.
+AWS Secrets Manager is a secrets management service that helps you protect access to your applications, services, and IT resources. This service enables you to rotate, manage, and retrieve database **credentials**, API keys, and other secrets throughout their lifecycle.
 
 - You can **rotate secrets on a schedule** or on demand by using the Secrets Manager console, AWS SDK, or AWS CLI.
 - rotation of secrets every X days
