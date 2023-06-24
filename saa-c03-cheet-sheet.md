@@ -105,6 +105,10 @@ Objects are orgnaized in trees. A group of trees is a forest.
 
   The composite alarm goes into ALARM state **only if all conditions of the rule are met.**
 
+- Streaming CloudWatch Logs data to Amazon OpenSearch Service
+
+  You can configure a CloudWatch Logs log group to stream data it receives to your Amazon OpenSearch Service cluster **in near real-time through a** **CloudWatch Logs subscription.** For more information
+
 ## Amazon CloudTrail
 
  CloudTrail provides event history of your AWS account activity, including actions taken through the AWS Management Console, AWS Command Line Interface (CLI), and AWS SDKs and APIs. By enabling CloudTrail, the company **can track user activity and changes to AWS resources, and monitor compliance with internal policies and external regulations.	**
@@ -148,6 +152,31 @@ S3 is the cheapest and most scalable.
 - Discovering and Deleting Incomplete Multipart Uploads to Lower Amazon S3 Costs
 
 - To encrypt an object at the time of upload, you need to add **a header called x-amz-server-side-encryption** to the request to tell S3 to encrypt the object using SSE-C, SSE-S3, or SSE-KMS.
+
+  ### SSE-S3
+
+  - **SSE-S3 key is handled, managed, and owned by AWS**
+  - "x-amz-server-side-encryption" : "AES256"
+  - enbled by defualy for new buckets & new objects
+
+  ### SSE-KMS
+
+  - **SSE-KMS keys are hanled and managed by AWS KMS**
+  - user control + audit key usage using CloudTrail
+  - "x-amz-server-side-encryption" : "aws:kms"
+  - Cons: expensive, every time you upload / download an object, you need to pay the api call to KMS
+
+  ### SSE-C
+
+  - **fully managed by the customer outside of AWS**
+  - S3 does not store the key
+  - HTTPS must be used
+  - key must provided ain HTTP headers, for every HTTP request
+  - HTTPS is mandatory for SSE)C
+
+- asw:SecureTransport
+
+  force encryption in transit
 
 - **S3 Storage Lens** is a fully managed S3 storage analytics solution that provides a comprehensive view of object storage usage, activity trends, and recommendations to optimize costs. Storage Lens allows you to **analyze object access patterns** across all of your S3 buckets and generate detailed metrics and reports.
 
@@ -613,7 +642,7 @@ The most cost-effective solution for **addressing high ReadIOPS and CPU utilizat
 
   use cases: web session handling
 
-- DynamoDB offers two built-in backup methods:
+- **DynamoDB offers two built-in backup methods:**
 
   - [On-demand](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/BackupRestore.html): Create backups when you choose.
 
