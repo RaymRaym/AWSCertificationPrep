@@ -16,6 +16,18 @@
 
 ## IAM
 
+- Common IAM roles
+
+  - EC2 Instance Roles 
+
+  - Lambda Function Roles 
+
+  - Roles for CloudFormation 
+
+- Audit
+
+  IAM Credential Reports & IAM Access Advisor
+
 - Providing access to AWS accounts owned by third parties
 
   **When third parties require access to your organization's AWS resources, you can use roles to delegate access to them.** For example, a third party might provide a service for managing your AWS resources. With IAM roles, you can grant these third parties access to your AWS resources without sharing your AWS security credentials. Instead, the third party can access your AWS resources by assuming a role that you create in your AWS account.
@@ -87,12 +99,6 @@ Objects are orgnaized in trees. A group of trees is a forest.
   Configuring provisioned concurrency would get rid of the "cold start" of the function therefore speeding up the proccess.
 
 - Create an IAM execution role with the required permissions and attach the IAM role to the Lambda function.
-
- 
-
-## Amazon Certificate Manager(ACM)
-
- To increase the application's performance, the solutions architect should import the SSL certificate into AWS Certificate Manager (ACM) and create an Application Load Balancer with an HTTPS listener that uses the SSL certificate from ACM. An Application Load Balancer (ALB) can offload the SSL termination process from the EC2 instances, which can help to increase the compute capacity available for the web application. By creating an ALB with an HTTPS listener and using the SSL certificate from ACM, the ALB can handle the SSL termination process, leaving the EC2 instances free to focus on running the web application.
 
 ## Amazon CloudWatch
 
@@ -247,11 +253,13 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
 
 ## Amazon EC2
 
--  Hibernate: 
+- stop -> ebs kept
+
+- Hibernate: 
+
+  save the RAM state, < 150GB, < 60days
 
   To **preserve contents of the instance's memory** whenever the instance is unavailable.
-
-- Auto scaling groups can not span multi region
 
 - **Amazon EC2 Auto Scaling lifecycle hooks**
 
@@ -263,6 +271,8 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
 
   Use predictive scaling to increase the number of EC2 instances in your Auto Scaling group in advance of daily and weekly patterns in traffic flows.
 
+- Auto scaling groups can not span multi region
+
 - **A target tracking policy** allows the Auto Scaling group to automatically adjust the number of EC2 instances in the group **based on a target value for a metric**.
 
 - TCP, UDP, and ICMP.
@@ -272,6 +282,281 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
   **Amazon EC2 Dedicated Hosts allow you to use your eligible software licenses from vendors** such as Microsoft and Oracle on Amazon EC2, so that you get the flexibility and cost effectiveness of using your own licenses, but with the resiliency, simplicity and elasticity of AWS. An Amazon EC2 Dedicated Host is a physical server fully dedicated for your use, so you can help address corporate compliance requirements.
 
   Amazon EC2 Dedicated Host is also integrated with AWS License Manager, a service which helps you manage your software licenses, including Microsoft Windows Server and Microsoft SQL Server licenses. In License Manager, you can specify your licensing terms for governing license usage, as well as your Dedicated Host management preferences for host allocation and host capacity utilization. Once setup, AWS takes care of these administrative tasks on your behalf, so that you can seamlessly launch virtual machines (instances) on Dedicated Hosts just like you would launch an EC2 instance with AWS provided licenses.
+
+- reserved 
+
+  1 & 3 years
+
+  - reserved instances
+  - convertible reserved instances
+
+  You can buy and sell in the Reserved Instance Marketplace
+
+- Capacity Reservations: you book a room for a period with full price even you don’t stay in it
+
+- spot fleet = spot Instances + on-demand 
+
+- Elastic IPs
+
+  When you stop and then start an EC2 instance, it can change its public IP.
+
+- Elastic Network Interface(ENI)
+
+  attaced to a EC2 instance, make it be able to be Internetable. 
+
+  Can be transfered to another EC2 , good for failover.
+
+## Amazon Elastic Block Store (Amazon EBS)
+
+- Snapshot
+
+  Can copy snapshots **across AZ or Region**
+
+  **A snapshot is constrained to the AWS Region where it was created.** After you create a snapshot of an EBS volume, you can use it to create new volumes in the same Region. For more information, see [Create a volume from a snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html#ebs-create-volume-from-snapshot). You can also **copy snapshots across Regions**, making it possible to use multiple Regions for geographical expansion , data center migration, and disaster recovery. You can copy any accessible snapshot that has a `completed` status. For more information, see [Copy an Amazon EBS snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-copy-snapshot.html).
+
+- Fast Snapshot Restore(FSR)
+
+  Amazon EBS fast snapshot restore (FSR) enables you to create a volume from a snapshot that is fully initialized at creation. This **eliminates the latency of I/O operations on a block when it is accessed for the first time**. Volumes that are created using fast snapshot restore instantly deliver all of their provisioned performance.
+
+- [Encryption by default](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#encryption-by-default) allows you to ensure that **all new EBS volumes created in your account are always encrypted,** even if you don’t specify encrypted=true request parameter.
+
+- Both GP2 and GP3 has max IOPS 16000 but GP3 is cost effective.
+
+  gp3 Can increase IOPS up to 16,000 and throughput up to 1000 MiB/s independently
+
+  gp2 are linked together to achieve max performance
+
+- **Multi-attach is supported exclusively on  [Provisioned IOPS SSD (io1 and io2) volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html#EBSVolumeTypes_piops).** up to 16 EC2 instances
+
+  io1/ io2 can handle over 32000 IOPS
+
+## Amazon Machine Image (AMI)
+
+AMI are built for a specific region (and can be copied across regions)
+
+You can launch EC2 instances from: 
+
+- A Public AMI: AWS provided 
+- Your own AMI: you make and maintain them yourself • 
+- An AWS Marketplace AMI: an AMI someone else made (and potentially sells)
+
+Build an AMI – this **will also create EBS snapshots**
+
+## Amazon Elastic File System (EFS)
+
+- Linux 
+
+- Concurrent or at the same time key word for EFS
+
+- **Portable Operating System Interface (POSIX)** 
+
+- pay per use no capacity planning
+
+- Grow to Petabyte-scale network file system, automatically
+
+- lifecycle policy
+
+
+## Elastic Load Balancer
+
+EC2, EC2 Auto Scaling Groups, Amazon ECS
+
+AWS Certificate Manager (ACM), CloudWatch
+
+Route 53, AWS WAF, AWS Global Accelerator
+
+- Health Check
+
+## Application Load Balancer
+
+Layer 7 (HTTP, HTTPS, WebSocket)
+
+- **Target Groups**
+
+  EC2, ECS tasks, Lambda (http request -> json event), **private IP** addresses
+
+can do
+
+- http - > https **redirect** rule with ACM
+
+- health check
+
+- Uses Server Name Indication (SNI)
+
+  SNI solves the problem of loading multiple SSL certificates onto one web server (to serve multiple websites) 
+
+  It’s a “newer” protocol, and requires the client to indicate the hostname of the target server in the initial SSL handshake
+
+  The server will then find the correct certificate, or return the default one
+
+![image-20230626222845912](saa-c03-cheet-sheet.assets/image-20230626222845912.png)
+
+
+
+## Network Load Balancer
+
+layer 4 ( TCP / UDP / **TLS)**
+
+- **Target Groups**
+
+  EC2, **private IP** addresses, **ALB**
+
+- health check
+
+  Health Checks support the TCP, HTTP and HTTPS Protocols
+
+- Uses Server Name Indication (SNI)
+
+## Gateway Load balancer
+
+Layer 3 (Network layer, IP protocal)
+
+Gateway Load Balancers enable you to deploy, scale, and **manage virtual appliances**, such as firewalls, **intrusion detection** and prevention systems, and **deep packet inspection** systems. It combines a transparent network gateway (that is, a single entry and exit point for all traffic) and distributes traffic while scaling your virtual appliances with the demand.
+
+A Gateway Load Balancer **operates at the third layer of the Open Systems Interconnection (OSI) model,** the network layer. It listens for **all IP packets** across all ports and forwards traffic to the target group that's specified in the listener rule. It maintains stickiness of flows to a specific target appliance using 5-tuple (for TCP/UDP flows) or 3-tuple (for non-TCP/UDP flows). The Gateway Load Balancer and its registered virtual appliance instances exchange application traffic using the [GENEVE](https://datatracker.ietf.org/doc/html/rfc8926) protocol on port 6081
+
+## Cross-Zone Load Balancing
+
+![image-20230626223957154](saa-c03-cheet-sheet.assets/image-20230626223957154.png)
+
+## Auto Scaling Group (ASG)
+
+ASG, Load Balancer multi-AZ
+
+- Min Size / Max Size / Initial Capacity
+
+- It is possible to **scale an ASG based on CloudWatch alarms**
+
+  An alarm monitors a metric (such as Average CPU, or a custom metric)
+
+- Predictive scaling: continuously forecast load and schedule scaling ahead
+- scaling based on 
+  - CPUUtilization = average CPU
+  - RequestCountPerTarget
+  - Average Network In / Out
+  - Any custom metric (that you push using CloudWatch)
+- After a scaling activity happens, you are in the **cooldown period (default 300 seconds)**
+
+![image-20230626224958617](saa-c03-cheet-sheet.assets/image-20230626224958617.png)
+
+## Amazon RDS
+
+- IAM role
+
+- **only gp2 or io1**
+
+- can'r be SSHed
+
+- Continuous backups and restore to specific timestamp (Point in Time Restore)!
+
+- Maintenance windows for upgrades
+
+- Scaling capability (vertical and horizontal)
+
+- By default, all inbound traffic to an RDS instance is blocked. 
+
+- *Multi-AZ deployments are not a read scaling solution, you cannot use a standby replica to serve read traffic. The standby is only there for failover.*
+
+- **Automated Backups**
+
+  This backup occurs during a daily user-configurable 30 minute period known as the **backup window**. Automated backups are kept for a configurable number of days (called the backup retention period). Your automatic backup **retention period can be configured to up to thirty-five days.**
+
+- Creating a read replica
+
+  When you create a read replica, Amazon RDS takes a DB snapshot of your source DB instance and begins replication. As a result, you experience a brief I/O suspension on your source DB instance while the DB snapshot occurs.
+
+  An active, long-running transaction can slow the process of creating the read replica. We recommend that you wait for long-running transactions to complete before creating a read replica. If you create multiple read replicas in parallel from the same source DB instance, Amazon RDS takes only one snapshot at the start of the first create action.
+
+  When creating a read replica, there are a few things to consider. First, you must enable automatic backups on the source DB instance by setting the backup retention period to a value other than 0. This requirement also applies to a read replica that is the source DB instance for another read replica. To enable automatic backups on an RDS for MySQL read replica, first create the read replica, then modify the read replica to enable automatic backups.
+
+- Storage Auto Scaling
+
+  You have to set Maximum Storage Threshold (maximum limit for DB storage)
+
+  RDS Storage Auto Scaling automatically scales storage capacity in response to growing database workloads, with **zero downtime**.
+
+- Amazon RDS event notification 
+
+  doesn't support any notification when data inside DB is updated/deleted/inserted. You can use a SQS to do notification.
+
+- **RDS Multi-AZ = Synchronous = Disaster Recovery (DR)**
+
+  By using Multi-AZ deployment, the company can achieve an **RPO of less than 1 second** because the standby instance is always in sync with the primary instance, ensuring that data changes are continuously replicated.
+
+- **Read Replica = Asynchronous**
+
+  up to 15 read replicas
+
+  Within AZ, Cross AZ or Cross Region
+
+- Amazon RDS Proxy
+
+  - Improving database efficiency by reducing the stress on database resources (e.g., CPU, RAM) and **minimize open connections (and timeouts)**
+  - **Reduced RDS & Aurora failover time by up 66%**
+  - **RDS Proxy is never publicly accessible (must be accessed from VPC)**
+  - • Enforce IAM Authentication for DB, and securely store credentials in AWS Secrets Manager
+  - ![image-20230626233300621](saa-c03-cheet-sheet.assets/image-20230626233300621.png)
+
+- Amazon RDS Custom for Oracle, Microsoft SQL Server Database
+
+  Amazon RDS Custom is a managed database service for legacy, custom, and packaged applications that require access to the underlying operating system and database environment. Amazon RDS Custom automates setup, operation, and scaling of databases in the cloud while **granting customers access to the database and underlying operating system to configure settings, install patches, and enable native features to meet the dependent application's requirements**
+
+  - **You can't create cross-Region RDS Custom for Oracle replicas.**
+
+## Amazon Aurora
+
+- IAM role
+
+- Failover in Aurora is instantaneous. It’s **HA (High Availability) native.** 
+- 6 copies of your data across 3 AZ: • 4 copies out of 6 needed for writes • 3 copies out of 6 need for reads • Self healing with peer-to-peer replication • Storage is striped across 100s of volumes • 
+
+- One Aurora Instance takes writes (master) 
+
+- Automated failover for master in less than 30 seconds 
+
+- Master + up to 15 Aurora Read Replicas serve reads 
+
+- Support for Cross Region Replication
+
+  ![image-20230626232401130](saa-c03-cheet-sheet.assets/image-20230626232401130.png)
+
+Aurora is a fully managed, MySQL-compatible relational database that is designed for high performance and high availability. Aurora Multi-AZ deployments **automatically maintain a synchronous standby replica in a different Availability Zone to provide high availability**. Additionally, Aurora Auto Scaling allows you to automatically scale the number of Aurora Replicas in response to read workloads, allowing you to meet the demand of unpredictable read workloads while maintaining high availability. This would provide an automated solution for scaling the database to meet the demand of the application while maintaining high availability.
+
+The most cost-effective solution for **addressing high ReadIOPS and CPU utilization when running large reports would be to migrate the monthly reporting to an Aurora Replica**. An Aurora Replica is a read-only copy of an Aurora database that is updated in real-time with the primary database. By using an Aurora Replica for running large reports, the primary database will be relieved of the additional read load, improving performance for the ecommerce application
+
+- **Amazon Aurora Serverless**
+
+  Amazon Aurora Serverless for MySQL is a fully managed, auto-scaling relational database service that scales up or down automatically based on the application demand. This service provides all the capabilities of Amazon Aurora, such as high availability, durability, and security, **without requiring the customer to provision any database instances.** 
+
+- **Amazon Aurora global databases**
+
+  **span multiple AWS Regions**, enabling low latency global reads and providing **fast recovery from the rare outage** that might affect an entire AWS Region. **An Aurora global database has a primary DB cluster in one Region, and up to five secondary DB clusters in different Regions.**
+
+  **Typical cross-region replication takes less than 1 second**
+
+- **Migrating data from an external MySQL database to an Amazon Aurora MySQL DB cluster  by using an Amazon S3 bucket**
+
+- Migrate an Oracle database to Aurora PostgreSQL using AWS DMS (AWS Data Migration Service ) and AWS SCT(AWS Schema Conversion Tool)
+
+- Aurora Database Cloning
+
+  - Useful to create a “staging” database from a “production” database without impacting the production database
+  - Create a new Aurora DB Cluster from an existing one
+  - Faster than snapshot & restore
+  - Very fast & cost-effective
+
+  
+
+## ElastiCache – Redis vs Memcached
+
+- 3 patterns
+  - Lazy Loading
+  - Write Through
+  - Session Store : set TTL
+
+- SSL Encryption Redis AUTH
+
+![image-20230626233445182](saa-c03-cheet-sheet.assets/image-20230626233445182.png)
 
 ## Amazon ECS
 
@@ -301,25 +586,6 @@ securely
 
 To automate the process of transferring the data from the on-premises SFTP server to an EC2 instance with an EFS file system, you can use AWS DataSync. AWS DataSync is a fully managed data transfer service that simplifies, automates, and accelerates transferring data between on-premises storage systems and **Amazon S3, Amazon EFS, or Amazon FSx for Windows File Server.** To use AWS DataSync for this task, you should **first install an AWS DataSync agent in the on-premises data center**. This agent is a lightweight software application that you install on your on-premises data source. T**he agent communicates with the AWS DataSync service to transfer data between the data source and target locations.**
 
-## Application Load Balancer
-
-Layer 7 (HTTP)
-
-can do
-
-- http - > https redirect rule with ACM
-- health check
-
-## Network Load Balancer
-
-layer 4 ( TCP / UDP / **TLS)**
-
-## Gateway Load balancer
-
-Gateway Load Balancers enable you to deploy, scale, and **manage virtual appliances**, such as firewalls, **intrusion detection** and prevention systems, and **deep packet inspection** systems. It combines a transparent network gateway (that is, a single entry and exit point for all traffic) and distributes traffic while scaling your virtual appliances with the demand.
-
-A Gateway Load Balancer **operates at the third layer of the Open Systems Interconnection (OSI) model,** the network layer. It listens for **all IP packets** across all ports and forwards traffic to the target group that's specified in the listener rule. It maintains stickiness of flows to a specific target appliance using 5-tuple (for TCP/UDP flows) or 3-tuple (for non-TCP/UDP flows). The Gateway Load Balancer and its registered virtual appliance instances exchange application traffic using the [GENEVE](https://datatracker.ietf.org/doc/html/rfc8926) protocol on port 6081
-
 ## Savings Plans
 
 - Compute Savings Plans
@@ -336,9 +602,9 @@ A Gateway Load Balancer **operates at the third layer of the Open Systems Interc
 
   You can share Savings Plans with a set of accounts. You can either choose to not share the benefit with other accounts, or to open up line item eligibility for the entire consolidated billing family of accounts.
 
-## Spot Fleet
 
-spot fleet = spot Instances + on-demand 
+
+
 
 ## Amazon CloudFront
 
@@ -534,84 +800,6 @@ Enforcing column-level security in Lake Formation
 
 ​	On a Snowball Edge device you can copy files with a speed of up to 100Gbps. 70TB will take around 5600 seconds, so very quickly, less than 2 hours. The downside is that it'll take between 4-6 working days to receive the device and then another 2-3 working days to send it back and for AWS to move the data onto S3 once it reaches them. Total time: 6-9 working days. Bandwidth used: 0.
 
-## Amazon Aurora
-
-Aurora is a fully managed, MySQL-compatible relational database that is designed for high performance and high availability. Aurora Multi-AZ deployments **automatically maintain a synchronous standby replica in a different Availability Zone to provide high availability**. Additionally, Aurora Auto Scaling allows you to automatically scale the number of Aurora Replicas in response to read workloads, allowing you to meet the demand of unpredictable read workloads while maintaining high availability. This would provide an automated solution for scaling the database to meet the demand of the application while maintaining high availability.
-
-The most cost-effective solution for **addressing high ReadIOPS and CPU utilization when running large reports would be to migrate the monthly reporting to an Aurora Replica**. An Aurora Replica is a read-only copy of an Aurora database that is updated in real-time with the primary database. By using an Aurora Replica for running large reports, the primary database will be relieved of the additional read load, improving performance for the ecommerce application
-
-- **Amazon Aurora Serverless**
-
-  Amazon Aurora Serverless for MySQL is a fully managed, auto-scaling relational database service that scales up or down automatically based on the application demand. This service provides all the capabilities of Amazon Aurora, such as high availability, durability, and security, **without requiring the customer to provision any database instances.** 
-
-- Amazon Aurora global databases
-
-  mazon Aurora global databases **span multiple AWS Regions**, enabling low latency global reads and providing **fast recovery from the rare outage** that might affect an entire AWS Region. An Aurora global database has a primary DB cluster in one Region, and up to five secondary DB clusters in different Regions.
-
-- **Migrating data from an external MySQL database to an Amazon Aurora MySQL DB cluster  by using an Amazon S3 bucket**
-
-- Migrate an Oracle database to Aurora PostgreSQL using AWS DMS (AWS Data Migration Service ) and AWS SCT(AWS Schema Conversion Tool)
-
-## Amazon Elastic Block Store (Amazon EBS)
-
-- Snapshot
-
-  **A snapshot is constrained to the AWS Region where it was created.** After you create a snapshot of an EBS volume, you can use it to create new volumes in the same Region. For more information, see [Create a volume from a snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-volume.html#ebs-create-volume-from-snapshot). You can also **copy snapshots across Regions**, making it possible to use multiple Regions for geographical expansion , data center migration, and disaster recovery. You can copy any accessible snapshot that has a `completed` status. For more information, see [Copy an Amazon EBS snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-copy-snapshot.html).
-
-- Fast Snapshot Restore(FSR)
-
-  Amazon EBS fast snapshot restore (FSR) enables you to create a volume from a snapshot that is fully initialized at creation. This **eliminates the latency of I/O operations on a block when it is accessed for the first time**. Volumes that are created using fast snapshot restore instantly deliver all of their provisioned performance.
-
-- [Encryption by default](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#encryption-by-default) allows you to ensure that **all new EBS volumes created in your account are always encrypted,** even if you don’t specify encrypted=true request parameter.
-- Both GP2 and GP3 has max IOPS 16000 but GP3 is cost effective.
-- **Multi-attach is supported exclusively on  [Provisioned IOPS SSD (io1 and io2) volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html#EBSVolumeTypes_piops).**
-
-## Amazon RDS
-
-- does not support io2 (only io1)
-
-- By default, all inbound traffic to an RDS instance is blocked. 
-
-- *Multi-AZ deployments are not a read scaling solution, you cannot use a standby replica to serve read traffic. The standby is only there for failover.*
-
-- Automated Backups
-
-  This backup occurs during a daily user-configurable 30 minute period known as the **backup window**. Automated backups are kept for a configurable number of days (called the backup retention period). Your automatic backup **retention period can be configured to up to thirty-five days.**
-
-- Creating a read replica
-
-  When you create a read replica, Amazon RDS takes a DB snapshot of your source DB instance and begins replication. As a result, you experience a brief I/O suspension on your source DB instance while the DB snapshot occurs.
-
-  An active, long-running transaction can slow the process of creating the read replica. We recommend that you wait for long-running transactions to complete before creating a read replica. If you create multiple read replicas in parallel from the same source DB instance, Amazon RDS takes only one snapshot at the start of the first create action.
-
-  When creating a read replica, there are a few things to consider. First, you must enable automatic backups on the source DB instance by setting the backup retention period to a value other than 0. This requirement also applies to a read replica that is the source DB instance for another read replica. To enable automatic backups on an RDS for MySQL read replica, first create the read replica, then modify the read replica to enable automatic backups.
-
-- Storage Auto Scaling
-
-  RDS Storage Auto Scaling automatically scales storage capacity in response to growing database workloads, with **zero downtime**.
-
-- Amazon RDS Custom for Oracle
-
-  Amazon RDS Custom is a managed database service for legacy, custom, and packaged applications that require access to the underlying operating system and database environment. Amazon RDS Custom automates setup, operation, and scaling of databases in the cloud while **granting customers access to the database and underlying operating system to configure settings, install patches, and enable native features to meet the dependent application's requirements**
-
-  - **You can't create cross-Region RDS Custom for Oracle replicas.**
-
-- Amazon RDS event notification 
-
-  doesn't support any notification when data inside DB is updated/deleted/inserted. You can use a SQS to do notification.
-
-- **RDS Multi-AZ = Synchronous = Disaster Recovery (DR)**
-
-   By using Multi-AZ deployment, the company can achieve an **RPO of less than 1 second** because the standby instance is always in sync with the primary instance, ensuring that data changes are continuously replicated.
-
-- **Read Replica = Asynchronous**
-
-- Amazon RDS Proxy
-
-  Many applications, including those built on modern serverless architectures, can have **a large number of open connections** to the database server and may open and close database connections at a high rate, exhausting database memory and compute resources. Amazon RDS Proxy allows applications to pool and share connections established with the database, improving database efficiency and application scalability.
-  
-  **The Lambda function must be deployed in your VPC, because RDS Proxy is never pubilcly accessible.**
-
 ## Amazon DynamoDB
 
 - hierachical data
@@ -678,13 +866,21 @@ The most cost-effective solution for **addressing high ReadIOPS and CPU utilizat
   
     Using this feature, you can export data from an Amazon DynamoDB table anytime within your point-in-time recovery window to an Amazon S3 bucket. For more information, see [DynamoDB data export to Amazon S3](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
 
-## EFS
+## Amazon Neptune
 
-- Linux 
+graph database, social network, knowledge graph, posts have comments, recommendation engines 
 
-- Concurrent or at the same time key word for EFS
+## Amazon Keyspaces
 
-- **Portable Operating System Interface (POSIX)** 
+**Apache Cassandra**
+
+## Amazon QLDB
+
+**immutable** system, Ledger, no decentralization
+
+## Amazon TimeStream
+
+serverless, time series data, auto scaling
 
 ## VPC (Virtual Private Cloud)
 
@@ -907,6 +1103,22 @@ Lambda is an event-driven, serverless compute service that automatically scales 
 
 - You cannot use URLs in the outbound rules of a security group.
 
+- Can only use IP and ports
+
+- **All inbound traffic is blocked by default**
+
+  22 = SSH (Secure Shell) - log into a Linux instance 
+
+  21 = FTP (File Transfer Protocol) – upload files into a file share 
+
+   22 = SFTP (Secure File Transfer Protocol) – upload files using SSH 
+
+   80 = HTTP – access unsecured websites 
+
+   443 = HTTPS – access secured websites 
+
+   3389 = RDP (Remote Desktop Protocol) – log into a Windows instance
+
 ## Security / Access / Restriction
 
 - IAM role
@@ -944,6 +1156,8 @@ Integration with(Load TLS Certificates on)
 - elastic load balancers
 - CloudFront Distributions
 - APIs on API Gateway
+
+ To increase the application's performance, the solutions architect should import the SSL certificate into AWS Certificate Manager (ACM) and create an Application Load Balancer with an HTTPS listener that uses the SSL certificate from ACM. An Application Load Balancer (ALB) can offload the SSL termination process from the EC2 instances, which can help to increase the compute capacity available for the web application. By creating an ALB with an HTTPS listener and using the SSL certificate from ACM, the ALB can handle the SSL termination process, leaving the EC2 instances free to focus on running the web application.
 
 ## AWS Secrets Manager
 
