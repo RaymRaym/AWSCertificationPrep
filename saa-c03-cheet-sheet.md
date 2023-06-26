@@ -330,6 +330,12 @@ A Gateway Load Balancer **operates at the third layer of the Open Systems Interc
 
   EC2 Instance Savings Plans provide the lowest prices, offering savings up to 72% in exchange for commitment to usage of individual instance families in a Region (e.g. M5 usage in N. Virginia). This automatically reduces your cost on the selected instance family in that region regardless of AZ, size, OS or tenancy. EC2 Instance Savings Plans give you the flexibility to change your usage between instances **within a family in that region**. For example, you can move from c5.xlarge running Windows to c5.2xlarge running Linux and automatically benefit from the Savings Plan prices.
 
+- Turning on shared reserved instances and Savings Plans discounts
+
+  You can use the console to turn RI sharing discounts back on for an account.
+
+  You can share Savings Plans with a set of accounts. You can either choose to not share the benefit with other accounts, or to open up line item eligibility for the entire consolidated billing family of accounts.
+
 ## Spot Fleet
 
 spot fleet = spot Instances + on-demand 
@@ -364,6 +370,20 @@ ALB and EC2 must be public.
   I want to restrict access to my Amazon Simple Storage Service (Amazon S3) bucket so that objects can be a**ccessed only through my Amazon CloudFront distribution**. How can I do that? Create a CloudFront origin access identity (OAI)
 
 - If you want CloudFront to cache different versions of your objects based on the **language specified** in the request, configure CloudFront to forward the `Accept-Language` header to your origin.
+
+- CloudFront geographic restrictions
+
+  When a user requests your content, CloudFront typically serves the requested content regardless of where the user is located. If you need to prevent users in specific countries from accessing your content, you can use the CloudFront geographic restrictions feature to do one of the following:
+
+  - Allow your users to access your content only if they’re in one of the approved countries on your allow list.
+  - Prevent your users from accessing your content if they’re in one of the banned countries on your block list
+
+- Serving private content with signed URLs and signed cookies
+
+  Many companies that distribute content over the internet want to restrict access to documents, business data, media streams, or content that is intended for selected users, for example, users who have paid a fee. To securely serve this private content by using CloudFront, you can do the following:
+
+  - Require that your users access your private content by using special CloudFront signed URLs or signed cookies.
+  - Require that your users access your content by using CloudFront URLs, not URLs that access content directly on the origin server (for example, Amazon S3 or a private HTTP server). Requiring CloudFront URLs isn't necessary, but we recommend it to prevent users from bypassing the restrictions that you specify in signed URLs or signed cookies.
 
 ## AWS Global Accelerator
 
@@ -427,6 +447,10 @@ A Kinesis data stream stores records from **24 hours by default, up to 8760 hour
 Athena helps you analyze unstructured, semi-structured, and structured data **stored in Amazon S3**. Examples include **CSV, JSON, or columnar data formats such as Apache Parquet and Apache ORC**. You can use Athena to run **ad-hoc queries** using ANSI SQL, without the need to aggregate or load the data into Athena.
 
 - Amazon Athena + Lambda (Data Source Connector) Frderated Query -> S3
+
+- Amazon Athena DynamoDB connector
+
+  The Amazon Athena DynamoDB connector **enables Amazon Athena to communicate with DynamoDB so that you can query your tables with SQL**. Write operations like [INSERT INTO](https://docs.aws.amazon.com/athena/latest/ug/insert-into.html) are not supported.
 
 ## Amazon RedShift
 
@@ -540,7 +564,7 @@ The most cost-effective solution for **addressing high ReadIOPS and CPU utilizat
 
 - [Encryption by default](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html#encryption-by-default) allows you to ensure that **all new EBS volumes created in your account are always encrypted,** even if you don’t specify encrypted=true request parameter.
 - Both GP2 and GP3 has max IOPS 16000 but GP3 is cost effective.
-- Multi-attach is supported exclusively on  [Provisioned IOPS SSD (io1 and io2) volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html#EBSVolumeTypes_piops).
+- **Multi-attach is supported exclusively on  [Provisioned IOPS SSD (io1 and io2) volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html#EBSVolumeTypes_piops).**
 
 ## Amazon RDS
 
@@ -669,6 +693,8 @@ A new AWS account has a default VPC. When you create an EC2 instance, it is auto
 A vpc spans all of the availability Zones in a Region,After you create a VPC, you can add one or more subnets in each Availability Zone.**a subnet is per AZ**, **AWS reserves 5 IP Addresses(first 4 & last 1) in each subnet**
 
 - Private VPC Link
+
+  **A VPC link is a resource in Amazon API Gateway that allows for connecting API routes to private resources inside a VPC.**
 
 - CIDR blocks 
 
@@ -866,6 +892,8 @@ Amazon Transcribe is a service that **automatically transcribes spoken language 
 To control access to the REST API and reduce development efforts, the company can use an **Amazon Cognito user pool authorizer in API Gateway**. This will allow Amazon Cognito to validate each request and ensure that only authenticated users can access the API. This solution has the **LEAST operational overhead**, as it does not require the company to develop and maintain any additional infrastructure or code.
 
 Identity Pool -> IAM Role
+
+Short description. **User pools are for authentication (identity verification)**. With a user pool, your app users can sign in through the user pool or federate through a third-party identity provider (IdP). **Identity pools are for authorization (access control)**
 
 ## AWS Network Firewall
 
@@ -1170,3 +1198,6 @@ Resulting data can be viewd within AWS Migration Hub
 
  ![image-20230622115653678](saa-c03-cheet-sheet.assets/image-20230622115653678.png)
 
+## Workload Discovery on AWS
+
+Workload Discovery on AWS is a service that helps visualize and understand the architecture of your workloads across multiple AWS accounts and Regions. It automatically discovers and maps the relationships between resources, providing an accurate representation of the architecture.
