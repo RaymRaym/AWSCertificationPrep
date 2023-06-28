@@ -68,168 +68,9 @@ When the state of an Amazon Machine Image (AMI) changes, Amazon EC2 generates an
 
 Objects are orgnaized in trees. A group of trees is a forest.
 
-## AWS Lambda Function
-
-- CloudWatch Events EventBridge -> trigger every certain time -> AWS lambda function perofrom a task
-
-- Limits
-
-  Maximum timeout 15 min
-
-  memory allocation : 128 MB - 10 GB
-
-  Environment variables 4 KB
-
-  disk capacity 512MB - 10 GB
-
-  vCPU cores: 6
-
-- Lambda in VPC
-
-  Lamdda will create an ENI(Elastic Network Interface) in your subnets
-
-  Lambda with RDS Proxy
-
-  **The Lambda function must be deployed in your VPC, because RDS Proxy is never pubilcly accessible.**
-
-- **Provisioned concurrency** 
-
-  Provisioned concurrency is the number of pre-initialized execution environments you want to allocate to your function. T**hese execution environments are prepared to respond immediately to incoming function requests**. Configuring provisioned concurrency incurs charges to your AWS account.
-
-  Configuring provisioned concurrency would get rid of the "cold start" of the function therefore speeding up the proccess.
-
-- Create an IAM execution role with the required permissions and attach the IAM role to the Lambda function.
-
-## Amazon CloudWatch
-
-- make a dashboard 
-
-- **EC2 do not provide by default memory metrics to CloudWatch and require the CloudWatch Agent to be installed on the monitored instances**
-- You can use metric streams to continually stream CloudWatch metrics to a destination of your choice, with **near-real-time** delivery and low latency. One of the use cases is Data Lake: create a metric stream and direct it to an Amazon Kinesis Data Firehose delivery stream that delivers your CloudWatch metrics to a data lake such as Amazon S3. 
-
-- composite alarm
-
-  The composite alarm goes into ALARM state **only if all conditions of the rule are met.**
-
-- Streaming CloudWatch Logs data to Amazon OpenSearch Service
-
-  You can configure a CloudWatch Logs log group to stream data it receives to your Amazon OpenSearch Service cluster **in near real-time through a** **CloudWatch Logs subscription.** For more information
-
-## Amazon CloudTrail
-
- CloudTrail provides event history of your AWS account activity, including actions taken through the AWS Management Console, AWS Command Line Interface (CLI), and AWS SDKs and APIs. By enabling CloudTrail, the company **can track user activity and changes to AWS resources, and monitor compliance with internal policies and external regulations.	**
-
-## AWS Config
-
-Configuration changes= AWS Config
-
-per-region
-
-AWS Config provides a detailed view of the resources associated with your AWS account, including how they are configured, how they are related to one another, and how the configurations and their relationships have **changed over time**.
-
-- Config Rules
-
-  Rules can be evaluated / triggered
-
 ## Amazon CloudFormation
 
 AWS CloudFormation is an **infrastructure-as-code service that automates the process of provisioning infrastructure resources.** It provides a way for developers and system administrators to define and manage infrastructure resources in a declarative way. CloudFormation templates describe resources and their relationships, which are then provisioned and managed as a single unit.
-
-## Amazon S3
-
-S3 is the cheapest and most scalable.
-
-- **S3 Lifecycle policies** 
-
-  allow you to define rules that automatically transition or **expire objects based on their age** or other criteria. By configuring an S3 Lifecycle policy to delete expired object versions and retain only the two most recent versions, you can effectively manage the storage costs while maintaining the desired retention policy. This solution is highly automated and requires minimal operational overhead as the lifecycle management is handled by S3 itself.
-
-- Configuring fast, secure file transfers using **Amazon S3 Transfer Acceleration**
-
-- With **S3 Block Public Access,** account administrators and bucket owners can easily set up centralized controls to limit public access to their Amazon S3 resources that are enforced regardless of how the resources are created.
-
-- S3 Standard-Infrequent Access(Standard-IA)
-
-  S3 Standard-IA is designed for infrequently accessed data, and it provides a lower storage cost than S3 Standard, while still offering the same low latency, high throughput, and high durability as S3 Standard.
-
-- S3 One Zone-Infrequent Access (S3 One Zone-IA)
-
-  cheaper, only in one zone, isn't high availabililty
-
-- Discovering and Deleting Incomplete Multipart Uploads to Lower Amazon S3 Costs
-
-- To encrypt an object at the time of upload, you need to add **a header called x-amz-server-side-encryption** to the request to tell S3 to encrypt the object using SSE-C, SSE-S3, or SSE-KMS.
-
-  ### SSE-S3
-
-  - **SSE-S3 key is handled, managed, and owned by AWS**
-  - "x-amz-server-side-encryption" : "AES256"
-  - enbled by defualy for new buckets & new objects
-
-  ### SSE-KMS
-
-  - **SSE-KMS keys are hanled and managed by AWS KMS**
-  - user control + audit key usage using CloudTrail
-  - "x-amz-server-side-encryption" : "aws:kms"
-  - Cons: expensive, every time you upload / download an object, you need to pay the api call to KMS
-
-  ### SSE-C
-
-  - **fully managed by the customer outside of AWS**
-  - S3 does not store the key
-  - HTTPS must be used
-  - key must provided ain HTTP headers, for every HTTP request
-  - HTTPS is mandatory for SSE)C
-
-- asw:SecureTransport
-
-  force encryption in transit
-
-- **S3 Storage Lens** is a fully managed S3 storage analytics solution that provides a comprehensive view of object storage usage, activity trends, and recommendations to optimize costs. Storage Lens allows you to **analyze object access patterns** across all of your S3 buckets and generate detailed metrics and reports.
-
-- S3 Object Lambda
-
-- Expiration / NoncurrentVersionExpiration 
-
-- S3 Replication (cross region)
-
-  - Unencrypted objects and objects encrypted with SSE-S3 are replicated by default
-
-  - Objects encrypted with SSE-C(customer provided key) are never replicated
-  - For objects encrypted with SSE-KMS, you need to enable the option(IAM Roles .....)
-
-- **S3 can NOT send event notification to SageMaker.**
-
-- S3 Transfer Acceleration
-
-- S3 File Gateway
-
-  ache recent access file
-
-- S3 Lifecycle Policy
-
-- s3:PutObjectLegalHold
-
-  The Object Lock legal hold operation enables you to place a legal hold on an object version. Like setting a retention period, **a legal hold prevents an object version from being overwritten or deleted.** However, a legal hold doesn't have an associated retention period and remains in effect until removed.
-
-- preassigned URL
-
-  preassigned URL is for upload or download for temporary time and for specific users outside the company. signed URL is for temporary access
-
-- S3 Object Lock enabled
-
-  - Compliance Mode
-
-    In compliance mode, a protected object version can't be overwritten or deleted by any user, including the root user in your AWS account. When an object is locked in compliance mode, its retention mode can't be changed, and its retention period can't be shortened.
-
-    **Compliance mode helps ensure that an object version can't be overwritten or deleted for the duration of the retention period.**
-
-  - Governance Mode
-
-    In governance mode, users can't overwrite or delete an object version or alter its lock settings unless they have special permissions. With governance mode, you protect objects against being deleted by most users, but you can still grant some users permission to alter the retention settings or delete the object if necessary. 
-
-    **In Governance mode, Objects can be deleted by some users with special permissions.**
-
-- Create Dynamic Contact Forms for S3 Static Websites Using AWS Lambda, Amazon API Gateway, and Amazon SES 
 
 ## AWS Storage Gateway
 
@@ -237,19 +78,7 @@ AWS Storage Gateway connects an on-premises software appliance with cloud-based 
 
 AWS Storage Gateway offers file-based File Gateways (Amazon S3 File and Amazon FSx File), volume-based (Cached and Stored), and tape-based storage solutions.
 
-cached / stored
-
-## Amazon API Gateway
-
-AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, different environments, security
-
-- **usage plan and API keys [subscription, control access]**
-
-  A *usage plan* specifies who can access one or more deployed API stages and methods—and optionally sets the target request rate to start throttling requests. The plan uses API keys to identify API clients and who can access the associated API stages for each key.
-
-  *API keys* are alphanumeric string values that you distribute to application developer customers to grant access to your API. You can use API keys together with [Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html), [IAM roles](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html), or [Amazon Cognito](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html) to control access to your APIs. API Gateway can generate API keys on your behalf, or you can import them from a [CSV file](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-key-file-format.html). You can generate an API key in API Gateway, or import it into API Gateway from an external source. For more information, see [Set up API keys using the API Gateway console](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-setup-api-key-with-console.html).
-
-
+cached / store
 
 ## Amazon EC2
 
@@ -260,6 +89,11 @@ AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, di
   save the RAM state, < 150GB, < 60days
 
   To **preserve contents of the instance's memory** whenever the instance is unavailable.
+
+- Placement Groups
+  - cluster: one AZ
+  - partition: 
+  - spread
 
 - **Amazon EC2 Auto Scaling lifecycle hooks**
 
@@ -558,53 +392,164 @@ The most cost-effective solution for **addressing high ReadIOPS and CPU utilizat
 
 ![image-20230626233445182](saa-c03-cheet-sheet.assets/image-20230626233445182.png)
 
-## Amazon ECS
+## Route 53
 
-- AWS Fargate (serverless)
+Alias Record + Load Balancer
 
-  AWS Fargate is a technology that you can use with Amazon ECS to run containers without having to manage servers or clusters of Amazon EC2 instances. With Fargate, you no longer have to provision, configure, or scale clusters of virtual machines to run containers. This removes the need to choose server types, decide when to scale your clusters, or optimize cluster packing. 
+## Elastic Beanstalk
 
-- To ensure that an Amazon Elastic Container Service (ECS) application has permission to access Amazon Simple Storage Service (S3), the correct solution is to create an AWS Identity and Access Management (IAM) role with the necessary S3 permissions and specify that role as the taskRoleArn(Amazon Resource Name) in the task definition for the ECS application. 
+Elastic Beanstalk is a fully managed service that makes it easy to deploy and run applications in the AWS; To enable frequent testing of new site features, you can use URL swapping to switch between multiple Elastic Beanstalk environments.
 
-## AWS Transfer Family
+rolling development (dev, test, prod)
 
-For Exam : Whenever you see **SFTP , FTP** look for "Transfer" in options available.
+## Amazon S3
 
-AWS Transfer Family is a fully managed AWS service that you can use to **transfer files into and out of** **Amazon Simple Storage Service (Amazon S3) storage or Amazon Elastic File System (Amazon EFS)** file systems over the following protocols: Secure Shell (SSH) File Transfer Protocol (SFTP): version 3 File Transfer Protocol Secure (FTPS) File Transfer Protocol (FTP) Applicability Statement 2 (AS2)
+S3 is the cheapest and most scalable.
 
-- Working with custom **identity providers**
+defined at the region level
 
-  You integrate your identity provider using an AWS Lambda function, which authenticates and authorizes your users for access to Amazon S3 or Amazon Elastic File System (Amazon EFS).
+If uploading more than 5GB, must use “multi-part upload”
 
-## Amazon DataSync
+public access / Cross-Account Access = bucket policy
 
-**NFS, SMB, HDFS, S3, EFS, FSx, Snowcone**
+user access = IAM Permissons, IAM Policy
 
-Better for one-time migration ?
+- Must enable Versioning in source and destination buckets before Replication
+- After you enable Replication, only new objects are replicated
 
-securely
+- **S3 Lifecycle policies** 
 
-To automate the process of transferring the data from the on-premises SFTP server to an EC2 instance with an EFS file system, you can use AWS DataSync. AWS DataSync is a fully managed data transfer service that simplifies, automates, and accelerates transferring data between on-premises storage systems and **Amazon S3, Amazon EFS, or Amazon FSx for Windows File Server.** To use AWS DataSync for this task, you should **first install an AWS DataSync agent in the on-premises data center**. This agent is a lightweight software application that you install on your on-premises data source. T**he agent communicates with the AWS DataSync service to transfer data between the data source and target locations.**
+  allow you to define rules that automatically **transition** or **expire objects based on their age** or other criteria. By configuring an S3 Lifecycle policy to delete expired object versions and retain only the two most recent versions, you can effectively manage the storage costs while maintaining the desired retention policy. This solution is highly automated and requires minimal operational overhead as the lifecycle management is handled by S3 itself.
 
-## Savings Plans
+  - Can be used to delete old versions of files (if versioning is enabled) 
 
-- Compute Savings Plans
+  - Can be used to delete incomplete Multi-Part uploads
 
-  Compute Savings Plans provide the most flexibility and help to reduce your costs by up to 66%. These plans automatically apply to EC2 instance usage **regardless of instance family**, size, AZ, Region, OS or tenancy, and **also apply to Fargate or Lambda usage**. For example, with Compute Savings Plans, you can change from C4 to M5 instances, shift a workload from EU (Ireland) to EU (London), or move a workload from EC2 to Fargate or Lambda at any time and automatically continue to pay the Savings Plans price.
+- **Requester Pays**
 
-- EC2 Instance Savings Plans
+  With Requester Pays buckets, **the requester instead of the bucket owner pays the cost of the request and the data download from the bucket**
 
-  EC2 Instance Savings Plans provide the lowest prices, offering savings up to 72% in exchange for commitment to usage of individual instance families in a Region (e.g. M5 usage in N. Virginia). This automatically reduces your cost on the selected instance family in that region regardless of AZ, size, OS or tenancy. EC2 Instance Savings Plans give you the flexibility to change your usage between instances **within a family in that region**. For example, you can move from c5.xlarge running Windows to c5.2xlarge running Linux and automatically benefit from the Savings Plan prices.
+  - Helpful when you want to share large datasets with other accounts 
+  - The requester must be authenticated in AWS (cannot be anonymous)
 
-- Turning on shared reserved instances and Savings Plans discounts
+- **S3 event notifications** 
 
-  You can use the console to turn RI sharing discounts back on for an account.
+  typically deliver events in seconds but can sometimes take a minute or longer
 
-  You can share Savings Plans with a set of accounts. You can either choose to not share the benefit with other accounts, or to open up line item eligibility for the entire consolidated billing family of accounts.
+  - EnventBridge
 
+- Configuring fast, secure file transfers using **Amazon S3 Transfer Acceleration**
+  - Compatible with multi-part upload
 
+- **S3 Batch Operation**
+  - Encrypt un-encrypted objects
+  - Copy objects between S3 buckets
+  - You can use S3 Inventory to get object list and use S3 Select to filter your objects
+  - ![image-20230627113352239](saa-c03-cheet-sheet.assets/image-20230627113352239.png)
 
+- **CORS** 
 
+  If a client makes a cross-origin request on our S3 bucket, we need to **enable the correct CORS headers**
+
+- **MFA Delete** 
+
+  - Versioning must be enabled on the bucket
+
+  - Only the bucket owner (root account) can enable/disable MFA Delete
+
+- With **S3 Block Public Access,** account administrators and bucket owners can easily set up centralized controls to limit public access to their Amazon S3 resources that are enforced regardless of how the resources are created.
+
+- S3 Standard-Infrequent Access(Standard-IA)
+
+  S3 Standard-IA is designed for infrequently accessed data, and it provides a lower storage cost than S3 Standard, while still offering the same low latency, high throughput, and high durability as S3 Standard.
+
+- S3 One Zone-Infrequent Access (S3 One Zone-IA)
+
+  cheaper, only in one zone, isn't high availabililty
+
+- Discovering and Deleting Incomplete Multipart Uploads to Lower Amazon S3 Costs
+
+- To encrypt an object at the time of upload, you need to add **a header called x-amz-server-side-encryption** to the request to tell S3 to encrypt the object using SSE-C, SSE-S3, or SSE-KMS.
+
+  SSE-S3
+
+  - **SSE-S3 key is handled, managed, and owned by AWS**
+  - "x-amz-server-side-encryption" : "AES256"
+  - enbled by defualy for new buckets & new objects
+
+  SSE-KMS
+
+  - **SSE-KMS keys are hanled and managed by AWS KMS**
+  - user control + audit key usage using CloudTrail
+  - "x-amz-server-side-encryption" : "aws:kms"
+  - Cons: expensive, every time you upload / download an object, you need to pay the api call to KMS
+
+  SSE-C
+
+  - **fully managed by the customer outside of AWS**
+  - S3 does not store the key
+  - HTTPS must be used
+  - key must provided ain HTTP headers, for every HTTP request
+  - HTTPS is mandatory for SSE)C
+
+- asw:SecureTransport
+
+  force encryption in transit
+
+- **S3 Storage Lens** is a fully managed S3 storage analytics solution that provides a comprehensive view of object storage usage, activity trends, and recommendations to optimize costs. Storage Lens allows you to **analyze object access patterns** across all of your S3 buckets and generate detailed metrics and reports.
+
+- S3 Object Lambda
+
+- Expiration / NoncurrentVersionExpiration 
+
+- S3 Replication (cross region)
+
+  - Unencrypted objects and objects encrypted with SSE-S3 are replicated by default
+
+  - Objects encrypted with SSE-C(customer provided key) are never replicated
+  - For objects encrypted with SSE-KMS, you need to enable the option(IAM Roles .....)
+
+- **S3 can NOT send event notification to SageMaker.**
+
+- S3 File Gateway
+
+  cache recent access file
+
+- S3 Lifecycle Policy
+
+- s3:PutObjectLegalHold
+
+  The Object Lock legal hold operation enables you to place a legal hold on an object version. Like setting a retention period, **a legal hold prevents an object version from being overwritten or deleted.** However, a legal hold doesn't have an associated retention period and remains in effect until removed.
+
+- preassigned URL
+
+  preassigned URL is for upload or download for temporary time and for specific users outside the company. signed URL is for temporary access
+
+  - Allow only logged-in users to download a premium video from your S3 bucket
+
+- **S3 Object Lock (versioning must be enabled)**
+
+  - Compliance Mode
+
+    In compliance mode, a protected object version can't be overwritten or deleted by any user, including the root user in your AWS account. When an object is locked in compliance mode, its retention mode can't be changed, and its retention period can't be shortened.
+
+    **Compliance mode helps ensure that an object version can't be overwritten or deleted for the duration of the retention period.**
+
+  - Governance Mode
+
+    In governance mode, users can't overwrite or delete an object version or alter its lock settings unless they have special permissions. With governance mode, you protect objects against being deleted by most users, but you can still grant some users permission to alter the retention settings or delete the object if necessary. 
+
+    **In Governance mode, Objects can be deleted by some users with special permissions.**
+
+- S3 Object Lambda
+
+  Use Cases: 
+
+  - Redacting personally identifiable information for analytics or non- production environments.
+  - Converting across data formats, such as converting XML to JSON. 
+  -  Resizing and watermarking images on the fly using caller-specific details, such as the user who requested the object.
+
+- Create Dynamic Contact Forms for S3 Static Websites Using AWS Lambda, Amazon API Gateway, and Amazon SES 
 
 ## Amazon CloudFront
 
@@ -618,7 +563,7 @@ ALB and EC2 must be public.
 
 - Using AWS Lambda with **CloudFront Lambda@Edge**
 
-  Lambda@Edge lets you run **Node.js and Python** Lambda functions to **customize content that CloudFront delivers**, executing the functions in AWS locations closer to the viewer. The functions run in response to CloudFront events, without provisioning or managing servers.
+  Lambda@Edge lets you run **Node.js and Python** Lambda functions to **customize content that CloudFront delivers**, 
 
   - Inspect cookies to rewrite URLs to different versions of a site for A/B testing.
   - **Send different objects to your users based on the `User-Agent` header,** which contains information about the device that submitted the request. **For example, you can send images in different resolutions to users based on their devices.**
@@ -637,14 +582,14 @@ ALB and EC2 must be public.
 
 - If you want CloudFront to cache different versions of your objects based on the **language specified** in the request, configure CloudFront to forward the `Accept-Language` header to your origin.
 
-- CloudFront geographic restrictions
+- **CloudFront geographic restrictions**
 
   When a user requests your content, CloudFront typically serves the requested content regardless of where the user is located. If you need to prevent users in specific countries from accessing your content, you can use the CloudFront geographic restrictions feature to do one of the following:
 
   - Allow your users to access your content only if they’re in one of the approved countries on your allow list.
   - Prevent your users from accessing your content if they’re in one of the banned countries on your block list
 
-- Serving private content with signed URLs and signed cookies
+- **Serving private content with signed URLs and signed cookies**
 
   Many companies that distribute content over the internet want to restrict access to documents, business data, media streams, or content that is intended for selected users, for example, users who have paid a fee. To securely serve this private content by using CloudFront, you can do the following:
 
@@ -661,17 +606,81 @@ AWS shield
 
 no cache
 
-## AWS Batch
+## AWS Snowball Family
 
-AWS Batch is a fully-managed service that can launch and manage the compute resources needed to execute batch jobs. It can scale the compute environment based on the size and timing of the batch jobs.
+![image-20230627115625452](saa-c03-cheet-sheet.assets/image-20230627115625452.png)
 
-## Amazon MQ
+- Snowball Edge Storage Optimized devices
+
+  - **Snowball Edge storage-optimized (for data transfer)** – This Snowball Edge device option has a 100 TB (80 TB usable) storage capacity.
+
+  - **Snowball Edge storage-optimized 210 TB** – This Snowball Edge device option has 210 TB of usable storage space.
+
+  - **Snowball Edge storage-optimized (with EC2 compute functionality)** – This Snowball Edge device option has up to 80 TB of usable storage space, 40 vCPUs, and 80 GB of memory for compute functionality. It also comes with 1 TB of additional SSD storage space for block volumes attached to Amazon EC2 AMIs.
+
+  - **Snowball Edge compute-optimized** – This Snowball Edge device (with AMD EPYC Gen2) has the most compute functionality, with up to 104 vCPUs, 416 GB of memory, and 28 TB of dedicated NVMe SSD for compute instances.
+
+    Snowball Edge compute-optimized (with AMD EPYC Gen1) has up to 52 vCPUs, 208 GB of memory, 42 TB (39.5 TB usable) storage space, and 7.68 TB of dedicated NVMe SSD for compute instances.
+
+  - **Snowball Edge compute-optimized with GPU** – This Snowball Edge device option is identical to the compute-optimized (with AMD EPYC Gen1) option and includes an installed graphics processing unit (GPU). The GPU is equivalent to the one available in the P3 Amazon EC2 instance type.
+
+​	On a Snowball Edge device you can copy files with a speed of up to 100Gbps. 70TB will take around 5600 seconds, so very quickly, less than 2 hours. The downside is that it'll take between 4-6 working days to receive the device and then another 2-3 working days to send it back and for AWS to move the data onto S3 once it reaches them. Total time: 6-9 working days. Bandwidth used: 0.
+
+- • Snowball cannot import to Glacier directly • You must use Amazon S3 first, in combination with an S3 lifecycle policy
+
+## Amazon FSx
+
+- HPC + Linux -> FSx for Lustre
+
+  FSx for Lustre makes it easy and cost-effective to launch and run the popular, high-performance Lustre file system. You use Lustre for workloads where speed matters, such as machine learning, high performance computing (HPC), video processing, and financial modeling. Amazon Fsx for Lustre is integrated with Amazon S3.
+
+- windows -> FSx for Windows
+
+- smb -> FSx
+
+- **For shared storage between Linux and windows you need to implement Amazon FSx for NetApp ONTAP**(for both NFS and SMB)
 
 
+## AWS Transfer Family
+
+For Exam : Whenever you see **SFTP , FTP** look for "Transfer" in options available.
+
+**tansfer into and out of Amazon S3 or EFS using FTP**
+
+IAM Role
+
+AWS Transfer Family is a fully managed AWS service that you can use to **transfer files into and out of** **Amazon Simple Storage Service (Amazon S3) storage or Amazon Elastic File System (Amazon EFS)** file systems over the following protocols: Secure Shell (SSH) File Transfer Protocol (SFTP): version 3 File Transfer Protocol Secure (FTPS) File Transfer Protocol (FTP) Applicability **Statement 2 (AS2)**
+
+- Working with custom **identity providers**
+
+  You integrate your identity provider using an AWS Lambda function, which authenticates and authorizes your users for access to Amazon S3 or Amazon Elastic File System (Amazon EFS).
+
+## Amazon DataSync
+
+**NFS, SMB, HDFS, S3, EFS, FSx, Snowcone**
+
+Better for one-time migration ?
+
+securely
+
+To automate the process of transferring the data from the on-premises SFTP server to an EC2 instance with an EFS file system, you can use AWS DataSync. AWS DataSync is a fully managed data transfer service that simplifies, automates, and accelerates transferring data between on-premises storage systems and **Amazon S3, Amazon EFS, or Amazon FSx for Windows File Server.** To use AWS DataSync for this task, you should **first install an AWS DataSync agent in the on-premises data center**. This agent is a lightweight software application that you install on your on-premises data source. T**he agent communicates with the AWS DataSync service to transfer data between the data source and target locations.**
 
 ## Amazon SQS
 
+- Access Controls: **IAM policies** to regulate access to the SQS API
+
 - For **Maximum message size**, enter a value. The range is **1 KB to 256 KB**. The default value is 256 KB.
+
+- **Message Visibility Timeout** 
+
+  to avoid duplicates
+
+- **Long polling** 
+
+  can be enabled at the queue level or at the API level using **WaitTimeSeconds**
+
+  LongPolling **decreases the number of API calls made to SQS** while increasing the efficiency and reducing latency of your application
+
 - To manage large Amazon Simple Queue Service (Amazon SQS) messages, you can use Amazon Simple Storage Service (Amazon S3) and the **Amazon SQS Extended Client Library for Java.** This is especially useful for storing and consuming messages **up to 2 GB.** Unless your application requires repeatedly creating queues and leaving them inactive or storing large amounts of data in your queues, consider using Amazon S3 for storing your data.
 
 - Standard queue
@@ -684,11 +693,26 @@ AWS Batch is a fully-managed service that can launch and manage the compute reso
 
 ## Amazon SNS(Simple Notification Service)
 
-pub/sub messaging service, one-to-many communication
+- pub/sub messaging service, one-to-many communication
+- Access Controls: **IAM policies** to regulate access to the SNS API
 
 Amazon SNS defines a *delivery policy* for each delivery protocol. The delivery policy defines how Amazon SNS retries the delivery of messages when server-side errors occur (when the system that hosts the subscribed endpoint becomes unavailable). When the delivery policy is exhausted, Amazon SNS stops retrying the delivery and discards the message—unless a dead-letter queue is attached to the subscription. For more information,
 
 **A dead-letter queue associated with an Amazon SNS subscription is an ordinary Amazon SQS queue.**
+
+- Fan Out
+
+- Message Filtering
+
+- can target to Kinese Data Firehose
+
+  ![image-20230627121425337](saa-c03-cheet-sheet.assets/image-20230627121425337.png)
+
+## Amazon Kinesis Data Streams
+
+**Retention between 1 day to 365 days**
+
+Kinesis streams **don't have fail-safe** for failed processing, unlike SQS.Amazon ECS
 
 ## Amazon Kinesis Data Firehose
 
@@ -696,15 +720,210 @@ a fully managed service for **streaming data to Amazon OpenSearch Service** (Ama
 
 Amazon Kinesis Data Firehose, which is a fully managed service that can automatically handle the data collection, data transformation, encryption, and data storage in **near-real time**. Kinesis Data Firehose can automatically store the data in Amazon S3 in Apache Parquet format for further processing. 
 
+- Supports many data formats, conversions, transformations, compression 
+-  Supports custom data transformations using AWS Lambda 
+-  Can send failed or all data to a backup S3 bucket
+
+![image-20230627121955291](saa-c03-cheet-sheet.assets/image-20230627121955291.png)
+
 ## Amazon Kinesis Analytics
+
+Amazon Kinesis Data Analytics is the easiest way to **transform and analyze streaming data in real time with Apache Flink**. Apache Flink is an open-source framework and engine for processing data streams. Kinesis Data Analytics reduces the complexity of building, managing, and integrating Apache Flink applications with other AWS services.
 
 **near-real-time data querying** = Kinesis analytics
 
 With Amazon Kinesis Data Analytics for SQL Applications, you can process and analyze streaming data using standard SQL. The service enables you to quickly author and run powerful SQL code against streaming sources to perform time series analytics, feed real-time dashboards, and create real-time metrics.
 
-## Amazon Kinesis Data Streams
+![image-20230627122531642](saa-c03-cheet-sheet.assets/image-20230627122531642.png)
 
-A Kinesis data stream stores records from **24 hours by default, up to 8760 hours (365 days).** Kinesis streams **don't have fail-safe** for failed processing, unlike SQS.
+## ECS
+
+IAM Roles
+
+- AWS Fargate (serverless)
+
+  AWS Fargate is a technology that you can use with Amazon ECS to run containers without having to manage servers or clusters of Amazon EC2 instances. With Fargate, you no longer have to provision, configure, or scale clusters of virtual machines to run containers. This removes the need to choose server types, decide when to scale your clusters, or optimize cluster packing. 
+
+  Fargate + EFS
+
+- To ensure that an Amazon Elastic Container Service (ECS) application has permission to access Amazon Simple Storage Service (S3), the correct solution is to create an AWS Identity and Access Management (IAM) role with the necessary S3 permissions and specify that role as the taskRoleArn(Amazon Resource Name) in the task definition for the ECS application. 
+
+- Auto Scaling
+
+  - target tracking: a specific CloudWatch metric
+  - step scaling: scale based on a specified CloudWatch Alarm
+  - Scheduled Scaling: scale based on a specific date / time
+
+  ECS Service Auto Scaling(task level) != EC2 Auto Scaling(EC2 level)
+
+## Amazon ECR
+
+- Store and manage Docker images on AWS
+
+- Fully integrated with ECS, backed by Amazon S3
+- Access is controlled through IAM (permission errors => policy)
+
+## AWS Lambda Function
+
+- CloudWatch Events EventBridge -> trigger every certain time -> AWS lambda function perofrom a task
+
+- Limits
+
+  Maximum timeout 15 min
+
+  memory allocation : **128 MB - 10 GB**
+
+  Environment variables 4 KB
+
+  disk capacity 512MB - 10 GB
+
+  vCPU cores: 6
+
+- Lambda in VPC
+
+  Lambda will create an **ENI(Elastic Network Interface)** in your subnets
+
+  Lambda with RDS Proxy
+
+  **The Lambda function must be deployed in your VPC, because RDS Proxy is never pubilcly accessible.**
+
+- **Provisioned concurrency** 
+
+  Provisioned concurrency is the number of pre-initialized execution environments you want to allocate to your function. T**hese execution environments are prepared to respond immediately to incoming function requests**. Configuring provisioned concurrency incurs charges to your AWS account.
+
+  Configuring provisioned concurrency would get rid of the "cold start" of the function therefore speeding up the proccess.
+
+- Create an IAM execution role with the required permissions and attach the IAM role to the Lambda function.
+
+## Savings Plans
+
+- Compute Savings Plans
+
+  Compute Savings Plans provide the most flexibility and help to reduce your costs by up to 66%. These plans automatically apply to EC2 instance usage **regardless of instance family**, size, AZ, Region, OS or tenancy, and **also apply to Fargate or Lambda usage**. For example, with Compute Savings Plans, you can change from C4 to M5 instances, shift a workload from EU (Ireland) to EU (London), or move a workload from EC2 to Fargate or Lambda at any time and automatically continue to pay the Savings Plans price.
+
+- EC2 Instance Savings Plans
+
+  EC2 Instance Savings Plans provide the lowest prices, offering savings up to 72% in exchange for commitment to usage of individual instance families in a Region (e.g. M5 usage in N. Virginia). This automatically reduces your cost on the selected instance family in that region regardless of AZ, size, OS or tenancy. EC2 Instance Savings Plans give you the flexibility to change your usage between instances **within a family in that region**. For example, you can move from c5.xlarge running Windows to c5.2xlarge running Linux and automatically benefit from the Savings Plan prices.
+
+- Turning on shared reserved instances and Savings Plans discounts
+
+  You can use the console to turn RI sharing discounts back on for an account.
+
+  You can share Savings Plans with a set of accounts. You can either choose to not share the benefit with other accounts, or to open up line item eligibility for the entire consolidated billing family of accounts.
+
+## Amazon DynamoDB
+
+- hierachical data
+
+- DynamoDB supports some of the world's largest scale applications by providing consistent, **single-digit millisecond response times at any scale**. You can build applications with virtually unlimited throughput and storage.
+
+- highly available with replication across multiple AZs
+
+- NoSQL databse with transaction suppport.
+
+- standard / infrequent access tables 
+
+- In DynamoDB, you can rapidly evolve schemas
+
+- **DynamoDB Streams** 
+
+  **captures a time-ordered sequence of item-level modifications** in any DynamoDB table and stores this information in a log for up to 24 hours. Applications can access this log and view the data items as they appeared before and after they were modified, in near-real time.
+
+- Amazon DynamoDB has two **read/write capacity** modes for processing reads and writes on your tables:
+
+  1. Provisioned Mode (default)
+
+     plan capacity beforehand
+
+     provisioned capacity with optional auto-scaling
+
+  2. On-demand Capacity (expensive)
+
+     When you choose on-demand mode, DynamoDB instantly **accommodates your workloads** as they ramp up or down to any previously reached traffic level. If a workload’s traffic level hits a new peak, **DynamoDB adapts rapidly to accommodate the workload**. Tables that use on-demand mode deliver the same single-digit millisecond latency, service-level agreement (SLA) commitment, and security that DynamoDB already offers. You can choose on-demand for both new and existing tables and you can continue using the existing DynamoDB APIs without changing code.
+
+     On-demand mode is a good option if any of the following are true:
+
+     - You create new tables with unknown workloads.
+
+     - You have **unpredictable** application traffic.
+
+     - You prefer the ease of paying for only what you use.
+
+- DAX (DynamoDB Accelarator)
+
+  Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, **seamless in-memory cache for DynamoDB** that helps improve the read performance of DynamoDB tables. DAX provides a caching layer between the application and DynamoDB, reducing the number of read requests made directly to DynamoDB. This can significantly reduce read latencies and improve overall application performance.
+
+- **DynamoDB Global Tables**
+
+  enable DynamoDB Streams first
+
+  two-way replication, active-active replication
+
+  accessible with low latency in multiple-regions
+
+- TTL
+
+  automatically delete items after an expiry timestamp 
+
+  use cases: web session handling
+
+- **DynamoDB offers two built-in backup methods:**
+
+  - **[Point-in-time recovery](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery.html): Turn on automatic and continuous backups.**
+
+    DynamoDB Export to S3 feature
+
+    Using this feature, you can export data from an Amazon DynamoDB table anytime within your point-in-time recovery window to an Amazon S3 bucket. For more information, see [DynamoDB data export to Amazon S3](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
+
+  - [On-demand](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/BackupRestore.html): Create backups when you choose.
+
+    On demand backups are designed **for long-term archiving and retention**, which is typically used to help customers meet compliance and regulatory requirements.
+
+## Amazon API Gateway
+
+IAM Roles, Cognito to do authentication
+
+AWS Lambda + API Gateway ,support for the WebSocket Protocol, API versioning, different environments, security
+
+- **usage plan and API keys [subscription, control access]**
+
+  A *usage plan* specifies who can access one or more deployed API stages and methods—and optionally sets the target request rate to start throttling requests. The plan uses API keys to identify API clients and who can access the associated API stages for each key.
+
+  *API keys* are alphanumeric string values that you distribute to application developer customers to grant access to your API. You can use API keys together with [Lambda authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html), [IAM roles](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html), or [Amazon Cognito](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html) to control access to your APIs. API Gateway can generate API keys on your behalf, or you can import them from a [CSV file](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-key-file-format.html). You can generate an API key in API Gateway, or import it into API Gateway from an external source. For more information, see [Set up API keys using the API Gateway console](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-setup-api-key-with-console.html).
+
+- API Gateway + Kinesis Data Stream + Kinesis Data Firehose + S3
+
+## Amazon Cognito
+
+To control access to the REST API and reduce development efforts, the company can use an **Amazon Cognito user pool authorizer in API Gateway**. This will allow Amazon Cognito to validate each request and ensure that only authenticated users can access the API. This solution has the **LEAST operational overhead**, as it does not require the company to develop and maintain any additional infrastructure or code.
+
+Identity Pool -> IAM Role
+
+Short description. **User pools are for authentication (identity verification)**. With a user pool, your app users can sign in through the user pool or federate through a third-party identity provider (IdP). **Identity pools are for authorization (access control)**
+
+Using Cognito to **generate temporary credentials with STS** to access S3 bucket with restricted policy. App users can directly access AWS resources this way. Pattern can be applied to DynamoDB, Lambda…
+
+## Amazon Neptune
+
+graph database, social network, knowledge graph, posts have comments, recommendation engines 
+
+## Amazon Keyspaces
+
+**Apache Cassandra**
+
+## Amazon QLDB (Quantum Ledger Database)
+
+**immutable** system, **Ledger**, no decentralization
+
+## Amazon TimeStream
+
+serverless, time series data, auto scaling
+
+## AWS Batch
+
+AWS Batch is a fully-managed service that can launch and manage the compute resources needed to execute batch jobs. It can scale the compute environment based on the size and timing of the batch jobs.
+
+
 
 ## Amazon Athena
 
@@ -718,11 +937,13 @@ Athena helps you analyze unstructured, semi-structured, and structured data **st
 
   The Amazon Athena DynamoDB connector **enables Amazon Athena to communicate with DynamoDB so that you can query your tables with SQL**. Write operations like [INSERT INTO](https://docs.aws.amazon.com/athena/latest/ug/insert-into.html) are not supported.
 
+  - run Federated Queries
+
 ## Amazon RedShift
 
 Amazon Redshift is a fully managed, **petabyte-scale data warehouse** service in the cloud. Amazon Redshift Serverless lets you access and analyze data without all of the configurations of a provisioned data warehouse.
 
-OLAP - online analytical processing (analytics and data warehousing)
+**OLAP - online analytical processing (analytics and data warehousing)**
 
 **PBs of data**
 
@@ -742,6 +963,8 @@ faster queries / joins / aggregations thanks to indexes
 Ingestion form Kinesis Data Firehose, IoT, CloudWatch Logs ...
 
 doesn't support sql query
+
+OpenSearch Dashboards
 
 ## Amazon EMR (Elastic MapReduce)
 
@@ -771,7 +994,7 @@ QuickSight **don't support IAM. We use users and groups** to view the QuickSight
 
 ## AWS Lake Formation
 
-[AWS Lake Formation](https://aws.amazon.com/lake-formation/) is a fully managed service that helps you build, secure, and manage data lakes, and provide access control for data in the data lake. Customers across lines of business (LOBs) need a way to **manage granular access permissions for different users at the table and column level**. Lake Formation helps you manage fine-grained access for internal and external customers from a centralized location and in a scalable way.
+AWS Lake Formation is a fully managed service that helps you build, secure, and manage data lakes, and provide access control for data in the data lake. Customers across lines of business (LOBs) need a way to **manage granular access permissions for different users at the table and column level**. Lake Formation helps you manage fine-grained access for internal and external customers from a centralized location and in a scalable way.
 
 build **find-grained Access Control** for your application 
 
@@ -782,105 +1005,103 @@ There are two options to share your databases and tables with another account by
 
 Enforcing column-level security in Lake Formation
 
-## AWS Snowball Family
+## Amazon Rekognition
 
-- Snowball Edge Storage Optimized devices
+Amazon Rekognition makes it easy to add **image** and video analysis to your applications. You just provide an image or video to the Amazon Rekognition API, and the service can identify objects, people, text, scenes, and activities. It can detect any inappropriate content as well. Amazon Rekognition also provides highly accurate facial analysis and facial recognition. With Amazon Rekognition Custom Labels, you can create a machine learning model that finds the objects, scenes, and concepts that are specific to your business needs.
 
-  - **Snowball Edge storage-optimized (for data transfer)** – This Snowball Edge device option has a 100 TB (80 TB usable) storage capacity.
+## Amazon Transcribe
 
-  - **Snowball Edge storage-optimized 210 TB** – This Snowball Edge device option has 210 TB of usable storage space.
+speech -> text
 
-  - **Snowball Edge storage-optimized (with EC2 compute functionality)** – This Snowball Edge device option has up to 80 TB of usable storage space, 40 vCPUs, and 80 GB of memory for compute functionality. It also comes with 1 TB of additional SSD storage space for block volumes attached to Amazon EC2 AMIs.
+Amazon Transcribe is a service that **automatically transcribes spoken language into written text**. It can handle **multiple speakers** and can generate transcript files in real-time or asynchronously. These transcript files can be stored in Amazon S3 for long-term storage. 
 
-  - **Snowball Edge compute-optimized** – This Snowball Edge device (with AMD EPYC Gen2) has the most compute functionality, with up to 104 vCPUs, 416 GB of memory, and 28 TB of dedicated NVMe SSD for compute instances.
+## Amazon Polly
 
-    Snowball Edge compute-optimized (with AMD EPYC Gen1) has up to 52 vCPUs, 208 GB of memory, 42 TB (39.5 TB usable) storage space, and 7.68 TB of dedicated NVMe SSD for compute instances.
+Turn text into lifelike speech using deep learning
 
-  - **Snowball Edge compute-optimized with GPU** – This Snowball Edge device option is identical to the compute-optimized (with AMD EPYC Gen1) option and includes an installed graphics processing unit (GPU). The GPU is equivalent to the one available in the P3 Amazon EC2 instance type.
+## Amazon Translate
 
-​	On a Snowball Edge device you can copy files with a speed of up to 100Gbps. 70TB will take around 5600 seconds, so very quickly, less than 2 hours. The downside is that it'll take between 4-6 working days to receive the device and then another 2-3 working days to send it back and for AWS to move the data onto S3 once it reaches them. Total time: 6-9 working days. Bandwidth used: 0.
+Natural and accurate language translation 
 
-## Amazon DynamoDB
+Amazon Translate allows you to **localize content - such as websites and applications** - for international users, and to easily translate large volumes of text efficiently
 
-- hierachical data
+## Amazon Comprehend & Medical
 
-- DynamoDB supports some of the world's largest scale applications by providing consistent, **single-digit millisecond response times at any scale**. You can build applications with virtually unlimited throughput and storage.
+Amazon Comprehend uses **natural language processing (NLP)** to extract insights about the content of documents. It develops insights by recognizing the entities, key phrases, language, sentiments, and other common elements in a document. Use Amazon Comprehend to create new products based on understanding the structure of documents. For example, using Amazon Comprehend you can search social networking feeds for mentions of products or scan an entire document repository for key phrases.
 
-- highly available with replication across multiple AZs
+- Uses NLP to detect **Protected Health Information (PHI)** – DetectPHI API
 
-- NoSQL databse with transaction suppport.
+## AWS SageMaker
 
-- standard / infrequent access tables 
+Amazon SageMaker is a fully managed **machine learning service**. With SageMaker, data scientists and developers can quickly and easily build and train machine learning models, and then directly deploy them into a production-ready hosted environment. It provides an integrated Jupyter authoring notebook instance for easy access to your data sources for exploration and analysis, so you don't have to manage servers. It also provides common machine learning algorithms that are optimized to run efficiently against extremely large data in a distributed environment. With native support for bring-your-own-algorithms and frameworks, SageMaker offers flexible distributed training options that adjust to your specific workflows. Deploy a model into a secure and scalable environment by launching it with a few clicks from SageMaker Studio or the SageMaker console.
 
-- In DynamoDB, you can rapidly evolve schemas
+## Amazon Textract
 
-- **DynamoDB Streams** 
+Amazon Textract enables you to add document text detection and analysis to your applications. You provide a document image to the Amazon Textract API, and the service detects the document text. Amazon Textract works with formatted text and can detect words and lines of words that are located close to each other. It can also analyze a document for items such as related text, tables, key-value pairs, and selection elements.
 
-  **captures a time-ordered sequence of item-level modifications** in any DynamoDB table and stores this information in a log for up to 24 hours. Applications can access this log and view the data items as they appeared before and after they were modified, in near-real time.
+## Amazon Lex
 
-- Amazon DynamoDB has two **read/write capacity** modes for processing reads and writes on your tables:
+build conversational bots – chatbots
 
-  1. Provisioned Mode (default)
+## Amazon Forecast
 
-     plan capacity beforehand
+build highly accurate forecasts
 
-  2. On-demand Capacity (expensive)
+## Amazon Kendra
 
-     When you choose on-demand mode, DynamoDB instantly **accommodates your workloads** as they ramp up or down to any previously reached traffic level. If a workload’s traffic level hits a new peak, **DynamoDB adapts rapidly to accommodate the workload**. Tables that use on-demand mode deliver the same single-digit millisecond latency, service-level agreement (SLA) commitment, and security that DynamoDB already offers. You can choose on-demand for both new and existing tables and you can continue using the existing DynamoDB APIs without changing code.
-  
-     On-demand mode is a good option if any of the following are true:
+ML-powered search engine
 
-     - You create new tables with unknown workloads.
+## Amazon Elastic Transcoder
 
-     - You have **unpredictable** application traffic.
-  
-     - You prefer the ease of paying for only what you use.
+Amazon Elastic Transcoder is media transcoding in [the cloud](https://aws.amazon.com/what-is-cloud-computing/). It is designed to be a highly scalable, easy to use and a cost effective way for developers and businesses to convert (or “transcode”) media files from their source format into versions that will playback on devices like smartphones, tablets and PCs.
 
-- DAX (DynamoDB Accelarator)
+## Amazon CloudWatch
 
-  Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, **seamless in-memory cache for DynamoDB** that helps improve the read performance of DynamoDB tables. DAX provides a caching layer between the application and DynamoDB, reducing the number of read requests made directly to DynamoDB. This can significantly reduce read latencies and improve overall application performance.
+procides metrics for every services in AWS
 
-- DynamoDB Global Tables
+- make a dashboard 
 
-  enable DynamoDB Streams first
+- **EC2 do not provide by default memory metrics to CloudWatch and require the CloudWatch Agent to be installed on the monitored instances** (IAM roles)
 
-  two-way replication
+  - CloudWatch Unified Agent
 
-  accessible with low latency in multiple-regions
+- You can use metric streams to continually stream CloudWatch metrics to a destination of your choice, with **near-real-time** delivery and low latency. One of the use cases is Data Lake: create a metric stream and direct it to an Amazon Kinesis Data Firehose delivery stream that delivers your CloudWatch metrics to a data lake such as Amazon S3. 
 
-- TTL
+- composite alarm
 
-  automatically delete items after an expiry timestamp 
+  The composite alarm goes into ALARM state **only if all conditions of the rule are met.**
 
-  use cases: web session handling
+- **Streaming CloudWatch Logs data to Amazon OpenSearch Service**
 
-- **DynamoDB offers two built-in backup methods:**
+  You can configure a CloudWatch Logs log group to stream data it receives to your Amazon OpenSearch Service cluster **in near real-time through a** **CloudWatch Logs subscription.** For more information
 
-  - [On-demand](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/BackupRestore.html): Create backups when you choose.
+- **Logs Insight**
 
-    On demand backups are designed **for long-term archiving and retention**, which is typically used to help customers meet compliance and regulatory requirements.
+  query logs
 
-  - **[Point-in-time recovery](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery.html): Turn on automatic and continuous backups.**
+- **Log Subscriptions**
 
-    DynamoDB Export to S3 feature
-  
-    Using this feature, you can export data from an Amazon DynamoDB table anytime within your point-in-time recovery window to an Amazon S3 bucket. For more information, see [DynamoDB data export to Amazon S3](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
+  for **near/real time** store 
 
-## Amazon Neptune
+  ![image-20230628150749514](saa-c03-cheet-sheet.assets/image-20230628150749514.png)
 
-graph database, social network, knowledge graph, posts have comments, recommendation engines 
+## Amazon CloudTrail
 
-## Amazon Keyspaces
+ CloudTrail provides event history of your AWS account activity, including actions taken through the AWS Management Console, AWS Command Line Interface (CLI), and AWS SDKs and APIs. By enabling CloudTrail, the company **can track user activity and changes to AWS resources, and monitor compliance with internal policies and external regulations.	**
 
-**Apache Cassandra**
+![image-20230628160114419](saa-c03-cheet-sheet.assets/image-20230628160114419.png)
 
-## Amazon QLDB
+## AWS Config
 
-**immutable** system, Ledger, no decentralization
+Configuration changes= AWS Config
 
-## Amazon TimeStream
+per-region
 
-serverless, time series data, auto scaling
+AWS Config provides a detailed view of the resources associated with your AWS account, including how they are configured, how they are related to one another, and how the configurations and their relationships have **changed over time**.
+
+- Config Rules
+
+  Rules can be evaluated / triggered
 
 ## VPC (Virtual Private Cloud)
 
@@ -1055,13 +1276,7 @@ A *transit gateway* is a network transit hub that you can use to interconnect yo
 
 
 
-## ![image-20230618171236256](saa-c03-cheet-sheet.assets/image-20230618171236256.png)Amazon Rekognition
-
-Amazon Rekognition makes it easy to add image and video analysis to your applications. You just provide an image or video to the Amazon Rekognition API, and the service can identify objects, people, text, scenes, and activities. It can detect any inappropriate content as well. Amazon Rekognition also provides highly accurate facial analysis and facial recognition. With Amazon Rekognition Custom Labels, you can create a machine learning model that finds the objects, scenes, and concepts that are specific to your business needs.
-
-## Amazon Textract
-
-Amazon Textract enables you to add document text detection and analysis to your applications. You provide a document image to the Amazon Textract API, and the service detects the document text. Amazon Textract works with formatted text and can detect words and lines of words that are located close to each other. It can also analyze a document for items such as related text, tables, key-value pairs, and selection elements.
+## ![image-20230618171236256](saa-c03-cheet-sheet.assets/image-20230618171236256.png)
 
 ## Amazon Simple Email Service(SES)
 
@@ -1070,26 +1285,6 @@ Amazon SES is a cost-effective and scalable email service that enables businesse
 ## Amazon DocumentDB
 
 MongoDB
-
-## Amazon Elastic Transcoder
-
-Amazon Elastic Transcoder is media transcoding in [the cloud](https://aws.amazon.com/what-is-cloud-computing/). It is designed to be a highly scalable, easy to use and a cost effective way for developers and businesses to convert (or “transcode”) media files from their source format into versions that will playback on devices like smartphones, tablets and PCs.
-
-## Amazon Transcribe
-
-speech -> text
-
-Amazon Transcribe is a service that **automatically transcribes spoken language into written text**. It can handle **multiple speakers** and can generate transcript files in real-time or asynchronously. These transcript files can be stored in Amazon S3 for long-term storage. 
-
-- PII redaction
-
-## Amazon Cognito
-
-To control access to the REST API and reduce development efforts, the company can use an **Amazon Cognito user pool authorizer in API Gateway**. This will allow Amazon Cognito to validate each request and ensure that only authenticated users can access the API. This solution has the **LEAST operational overhead**, as it does not require the company to develop and maintain any additional infrastructure or code.
-
-Identity Pool -> IAM Role
-
-Short description. **User pools are for authentication (identity verification)**. With a user pool, your app users can sign in through the user pool or federate through a third-party identity provider (IdP). **Identity pools are for authorization (access control)**
 
 ## AWS Network Firewall
 
@@ -1128,20 +1323,6 @@ Lambda is an event-driven, serverless compute service that automatically scales 
 - **SCP (Service Control Policy)**
 
   Service control policies (SCPs) are one type of policy that you can use to manage your organization. SCPs offer central control over the maximum available permissions for all accounts in your organization, allowing you to ensure your accounts stay within your organization's access control guidelines. 
-
-## Elastic Beanstalk
-
-Elastic Beanstalk is a fully managed service that makes it easy to deploy and run applications in the AWS; To enable frequent testing of new site features, you can use URL swapping to switch between multiple Elastic Beanstalk environments.
-
-rolling development
-
-## AWS SageMaker
-
-Amazon SageMaker is a fully managed **machine learning service**. With SageMaker, data scientists and developers can quickly and easily build and train machine learning models, and then directly deploy them into a production-ready hosted environment. It provides an integrated Jupyter authoring notebook instance for easy access to your data sources for exploration and analysis, so you don't have to manage servers. It also provides common machine learning algorithms that are optimized to run efficiently against extremely large data in a distributed environment. With native support for bring-your-own-algorithms and frameworks, SageMaker offers flexible distributed training options that adjust to your specific workflows. Deploy a model into a secure and scalable environment by launching it with a few clicks from SageMaker Studio or the SageMaker console.
-
-## Amazon Comprehend
-
-Amazon Comprehend uses **natural language processing (NLP)** to extract insights about the content of documents. It develops insights by recognizing the entities, key phrases, language, sentiments, and other common elements in a document. Use Amazon Comprehend to create new products based on understanding the structure of documents. For example, using Amazon Comprehend you can search social networking feeds for mentions of products or scan an entire document repository for key phrases.
 
 ## Amazon AppFlow
 
@@ -1276,20 +1457,6 @@ send findings to Amazon EventBridge
 detect sensitive data. such as personally identifiable information (PII) -> notify using EventBridge
 
 
-
-## Amazon FSx
-
-- HPC + Linux -> FSx for Lustre
-
-  FSx for Lustre makes it easy and cost-effective to launch and run the popular, high-performance Lustre file system. You use Lustre for workloads where speed matters, such as machine learning, high performance computing (HPC), video processing, and financial modeling. Amazon Fsx for Lustre is integrated with Amazon S3.
-
-- windows -> FSx
-
-- smb -> FSx
-
-- **For shared storage between Linux and windows you need to implement Amazon FSx for NetApp ONTAP**(for both NFS and SMB)
-
-
 ## Service Catalog
 
 Service Catalog allows organizations to **centrally manage** commonly deployed IT services, and helps organizations achieve consistent governance and meet compliance requirements. End users can quickly deploy only the approved IT services they need, following the constraints set by your organization.
@@ -1315,6 +1482,10 @@ Workload Discovery on AWS can be used to build, customize, and share detailed vi
 ## AWS Billing
 
 ## AWS Trusted Advisor
+
+*use Trusted Advisor for optimizing my costs.*
+
+**Cost Optimization**
 
 ## Disaster Recovery(DR)
 
@@ -1360,7 +1531,7 @@ Workload Discovery on AWS can be used to build, customize, and share detailed vi
 
   An ongoing replication task can be used to **continuously replicate** data from the on-premises database to the Aurora database. This will ensure that the Aurora database remains in sync with the on-premises database.
 
-  In this way, both databases are up and running
+  In this way, both databases are up and running110
 
 ## AWS Schema Conversion Tool (SCT)
 
